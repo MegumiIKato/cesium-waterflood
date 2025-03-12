@@ -1,0 +1,32 @@
+# 忽略GuangFuRoad文件夹
+/GuangFuRoad/
+GuangFuRoad/
+
+# 忽略常见的系统文件
+.DS_Store
+Thumbs.db
+
+# 忽略编辑器和IDE文件
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 忽略日志文件
+*.log
+
+# 忽略构建输出
+/dist/
+/build/
+/out/
+
+# 忽略依赖目录
+/node_modules/
+/bower_components/
+
+# 忽略环境配置文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local 

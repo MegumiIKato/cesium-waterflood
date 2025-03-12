@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- Cesium CSS -->
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <!-- Cesium JS -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+    <!-- Vue JS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="index.js"></script>
+    <title>城市洪涝灾害模拟仿真平台</title>
+</head>
+<body>
+    <header class="header">
+        <div class="header-title">城市洪涝灾害模拟仿真平台</div>
+        <div class="header-buttons">
+            <button class="header-btn">开始</button>
+            <button class="header-btn">终止</button>
+        </div>
+    </header>
+    
+    <main class="main-content">
+        <div id="cesiumContainer" class="cesium-container"></div>
+        <!-- 添加鼠标位置信息面板 -->
+        <div id="mouse-position-panel" class="mouse-position-panel">
+            <div class="panel-title">位置</div>
+            <div class="panel-content">
+                <div class="panel-row">经度: <span id="longitude">--</span>°</div>
+                <div class="panel-row">纬度: <span id="latitude">--</span>°</div>
+                <div class="panel-row">高度: <span id="height">--</span>米</div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="copyright">© 2025 城市洪涝灾害模拟仿真平台 版权所有 云南大学 Yunnan University</div>
+    </footer>
+</body>
+</html>

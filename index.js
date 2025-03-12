@@ -1,0 +1,202 @@
+// 等待DOM加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+    // 设置Cesium Ion访问令牌
+    // 注意：这里使用的是默认令牌，建议替换为您自己的访问令牌
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZDA3NzgyZi1hN2I4LTQ5OTItYmJlMS0yNzk3MTVkYjI0ZDUiLCJpZCI6MTIwMzcyLCJpYXQiOjE2NzI5MDA2ODN9.eiM100rpfWfXX_eQJ2Y3GjFgP6eR2H4L6GLLM2IUUwk';
+    
+    // 天地图密钥
+    const tdtToken = '95478fb1c6e5ac392e34aa9389a83b81';
+    
+    // 创建天地图影像底图
+    const tdtImgProvider = new Cesium.WebMapTileServiceImageryProvider({
+        url: `http://t0.tianditu.gov.cn/img_w/wmts?tk=${tdtToken}`,
+        layer: 'img',
+        style: 'default',
+        format: 'tiles',
+        tileMatrixSetID: 'w',
+        credit: new Cesium.Credit('天地图全球影像服务'),
+        subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'],
+        maximumLevel: 18
+    });
+    
+    // 创建天地图影像注记底图
+    const tdtImgMarkProvider = new Cesium.WebMapTileServiceImageryProvider({
+        url: `http://t0.tianditu.gov.cn/cia_w/wmts?tk=${tdtToken}`,
+        layer: 'cia',
+        style: 'default',
+        format: 'tiles',
+        tileMatrixSetID: 'w',
+        credit: new Cesium.Credit('天地图全球影像中文注记服务'),
+        subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'],
+        maximumLevel: 18
+    });
+    
+    // 创建Cesium查看器
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+        // 配置查看器选项
+        imageryProvider: tdtImgProvider, // 使用天地图影像作为底图
+        terrainProvider: Cesium.createWorldTerrain(), // 使用全球地形
+        animation: false, // 隐藏动画控件
+        baseLayerPicker: false, // 隐藏图层选择器，因为我们使用自定义底图
+        fullscreenButton: false, // 显示全屏按钮
+        vrButton: false, // 隐藏VR按钮
+        geocoder: true, // 显示地理编码器
+        homeButton: false, // 显示Home按钮
+        infoBox: false, // 显示信息框
+        sceneModePicker: true, // 显示场景模式选择器
+        selectionIndicator: false, // 隐藏选择指示器，避免与拖拽冲突
+        timeline: false, // 隐藏时间线
+        navigationHelpButton: false, // 显示导航帮助按钮
+        scene3DOnly: false, // 允许2D和3D模式切换
+        shouldAnimate: true, // 启用动画
+        shadows: false, // 禁用阴影
+    });
+    
+    // 添加天地图影像注记图层
+    viewer.imageryLayers.addImageryProvider(tdtImgMarkProvider);
+    
+    // 禁用深度测试，使大气效果更明显
+    viewer.scene.globe.depthTestAgainstTerrain = true;
+    
+    // 创建模型偏移矩阵
+    // 参数说明：
+    // 1. x方向平移（米）- 东西方向
+    // 2. y方向平移（米）- 南北方向
+    // 3. z方向平移（米）- 垂直方向
+    const modelOffset = {
+        x: 0.0,    // 向东偏移量（米）
+        y: 0.0,    // 向北偏移量（米）
+        z: -20.0     // 向上偏移量（米）
+    };
+    
+    // 创建模型变换矩阵
+    const modelMatrix = Cesium.Matrix4.fromTranslation(
+        new Cesium.Cartesian3(modelOffset.x, modelOffset.y, modelOffset.z)
+    );
+    
+    // 加载GuangFuRoad 3DTiles数据
+    const guangFuRoadTileset = new Cesium.Cesium3DTileset({
+        url: 'GuangFuRoad/tileset.json',
+        modelMatrix: modelMatrix, // 设置模型变换矩阵，用于偏移模型位置
+        maximumScreenSpaceError: 16, // 最大屏幕空间误差，值越小模型越精细，但性能消耗越大
+        maximumMemoryUsage: 8000, // 最大内存使用量（MB）
+        dynamicScreenSpaceError: true, // 启用动态屏幕空间误差
+        dynamicScreenSpaceErrorDensity: 0.00278, // 动态屏幕空间误差密度
+        dynamicScreenSpaceErrorFactor: 4.0, // 动态屏幕空间误差因子
+        dynamicScreenSpaceErrorHeightFalloff: 0.25, // 动态屏幕空间误差高度衰减
+        skipLevelOfDetail: true, // 启用跳过细节级别
+        baseScreenSpaceError: 1024, // 基础屏幕空间误差
+        skipScreenSpaceErrorFactor: 16, // 跳过屏幕空间误差因子
+        skipLevels: 1, // 跳过的级别数
+        immediatelyLoadDesiredLevelOfDetail: false, // 不要立即加载所需的细节级别
+        loadSiblings: false, // 不加载兄弟节点
+        cullWithChildrenBounds: true, // 使用子节点边界进行剔除
+        preloadWhenHidden: true, // 隐藏时预加载
+        preferLeaves: true, // 优先加载叶节点
+        debugShowBoundingVolume: false, // 不显示边界体积
+        debugShowContentBoundingVolume: false, // 不显示内容边界体积
+        debugShowViewerRequestVolume: false, // 不显示查看器请求体积
+        debugFreezeFrame: false, // 不冻结帧
+    });
+    
+    // 添加tileset到场景
+    viewer.scene.primitives.add(guangFuRoadTileset);
+    
+    // 当tileset加载完成后，设置视角到模型区域
+    guangFuRoadTileset.readyPromise.then(function(tileset) {
+        // 使用提供的相机参数作为初始视角
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(
+                102.684693, // 经度
+                24.987954,  // 纬度
+                2116.44     // 高度
+            ),
+            orientation: {
+                heading: Cesium.Math.toRadians(19.21), // 朝向
+                pitch: Cesium.Math.toRadians(-42.75),  // 俯仰角
+                roll: Cesium.Math.toRadians(0.00)      // 翻滚角
+            },
+            duration: 2.0 // 飞行时间（秒）
+        });
+        
+        console.log('GuangFuRoad 3DTiles模型加载完成');
+        console.log('相机已设置到预定义视角');
+        
+        // 初始化鼠标位置信息面板
+        initMousePositionPanel();
+    }).otherwise(function(error) {
+        console.error('加载GuangFuRoad 3DTiles模型失败:', error);
+    });
+    
+    // 初始化鼠标位置信息面板
+    function initMousePositionPanel() {
+        // 获取显示元素
+        const longitudeElement = document.getElementById('longitude');
+        const latitudeElement = document.getElementById('latitude');
+        const heightElement = document.getElementById('height');
+        
+        // 使用Cesium的实体选择事件处理器
+        const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        
+        // 使用节流函数减少频繁调用
+        let lastUpdate = 0;
+        const throttleDelay = 100; // 节流延迟时间（毫秒）
+        
+        // 添加鼠标移动事件监听
+        handler.setInputAction(function(movement) {
+            const now = Date.now();
+            if (now - lastUpdate < throttleDelay) {
+                return;
+            }
+            lastUpdate = now;
+            
+            // 使用Cesium的地形采样功能获取精确位置
+            const ray = viewer.camera.getPickRay(movement.endPosition);
+            if (!ray) return;
+            
+            // 尝试获取地形上的点
+            const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+            
+            if (cartesian) {
+                // 将笛卡尔坐标转换为地理坐标
+                const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                const longitudeDegrees = Cesium.Math.toDegrees(cartographic.longitude);
+                const latitudeDegrees = Cesium.Math.toDegrees(cartographic.latitude);
+                const heightValue = cartographic.height;
+                
+                // 更新显示
+                longitudeElement.textContent = longitudeDegrees.toFixed(6);
+                latitudeElement.textContent = latitudeDegrees.toFixed(6);
+                heightElement.textContent = heightValue.toFixed(2);
+            } else {
+                // 如果没有击中地形，尝试获取椭球体上的点
+                const cartesian = viewer.camera.pickEllipsoid(
+                    movement.endPosition,
+                    viewer.scene.globe.ellipsoid
+                );
+                
+                if (cartesian) {
+                    const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+                    const longitudeDegrees = Cesium.Math.toDegrees(cartographic.longitude);
+                    const latitudeDegrees = Cesium.Math.toDegrees(cartographic.latitude);
+                    
+                    // 更新经纬度显示
+                    longitudeElement.textContent = longitudeDegrees.toFixed(6);
+                    latitudeElement.textContent = latitudeDegrees.toFixed(6);
+                    heightElement.textContent = '0.00'; // 椭球体表面高度为0
+                } else {
+                    // 如果都没有获取到，显示默认值
+                    longitudeElement.textContent = '--';
+                    latitudeElement.textContent = '--';
+                    heightElement.textContent = '--';
+                }
+            }
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        
+    }
+    
+    // 将viewer对象暴露到全局作用域，以便其他脚本可以访问
+    window.cesiumViewer = viewer;
+    
+    console.log('Cesium初始化完成');
+});
