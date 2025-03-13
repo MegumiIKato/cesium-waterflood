@@ -1,4 +1,5 @@
 import { rain, stopRain } from './raineffect.js';
+import { initDrawTools, startDrawRectangle, stopDrawRectangle } from './drawtools.js';
 // 等待DOM加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
 
@@ -54,13 +55,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         scene3DOnly: false, // 允许2D和3D模式切换
         shouldAnimate: true, // 启用动画
         shadows: false, // 禁用阴影
+        requestRenderMode: true, // 启用请求渲染模式，减少不必要的渲染
+        maximumRenderTimeChange: Infinity, // 设置最大渲染时间变化
     });
+    
+    // 隐藏左下角的Cesium Ion标志和归因信息
+    viewer._cesiumWidget._creditContainer.style.display = "none";
     
     // 添加天地图影像注记图层
     viewer.imageryLayers.addImageryProvider(tdtImgMarkProvider);
     
     // 禁用深度测试，使大气效果更明显
-    viewer.scene.globe.depthTestAgainstTerrain = true;
+    viewer.scene.globe.depthTestAgainstTerrain = false;
     
     // 创建模型偏移矩阵
     // 参数说明：
@@ -70,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const modelOffset = {
         x: 0.0,    // 向东偏移量（米）
         y: 0.0,    // 向北偏移量（米）
-        z: -20.0     // 向上偏移量（米）
+        z: -30.0     // 向上偏移量（米）
     };
     
     // 创建模型变换矩阵
@@ -78,12 +84,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         new Cesium.Cartesian3(modelOffset.x, modelOffset.y, modelOffset.z)
     );
     
-    // 加载GuangFuRoad 3DTiles数据
+    // 创建GuangFuRoad 3DTiles数据
     const guangFuRoadTileset = new Cesium.Cesium3DTileset({
         url: 'GuangFuRoad/tileset.json',
         modelMatrix: modelMatrix, // 设置模型变换矩阵，用于偏移模型位置
         maximumScreenSpaceError: 16, // 最大屏幕空间误差，值越小模型越精细，但性能消耗越大
-        maximumMemoryUsage: 8000, // 最大内存使用量（MB）
+        maximumMemoryUsage: 6000, // 最大内存使用量（MB）
         dynamicScreenSpaceError: true, // 启用动态屏幕空间误差
         dynamicScreenSpaceErrorDensity: 0.00278, // 动态屏幕空间误差密度
         dynamicScreenSpaceErrorFactor: 4.0, // 动态屏幕空间误差因子
@@ -95,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         immediatelyLoadDesiredLevelOfDetail: false, // 不要立即加载所需的细节级别
         loadSiblings: false, // 不加载兄弟节点
         cullWithChildrenBounds: true, // 使用子节点边界进行剔除
-        preloadWhenHidden: true, // 隐藏时预加载
+        preloadWhenHidden: false, // 不在隐藏时预加载，减少内存使用
         preferLeaves: true, // 优先加载叶节点
         debugShowBoundingVolume: false, // 不显示边界体积
         debugShowContentBoundingVolume: false, // 不显示内容边界体积
@@ -105,6 +111,73 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 添加tileset到场景
     viewer.scene.primitives.add(guangFuRoadTileset);
+    
+    // 启用视锥体裁剪 - 仅加载摄像机视野内的瓦片
+    viewer.scene.globe.cullWithChildrenBounds = true;
+    viewer.scene.globe.maximumScreenSpaceError = 16; // 降低地球的屏幕空间误差以提高性能
+    
+    // 设置瓦片加载优化选项
+    guangFuRoadTileset.cullRequestsWhileMoving = true; // 移动时暂停瓦片请求
+    guangFuRoadTileset.cullRequestsWhileMovingMultiplier = 10; // 移动时的裁剪乘数
+    guangFuRoadTileset.foveatedScreenSpaceError = true; // 启用中心区域优先加载
+    guangFuRoadTileset.foveatedConeSize = 0.3; // 中心区域大小
+    guangFuRoadTileset.maximumScreenSpaceError = 16; // 降低最大屏幕空间误差以提高性能
+    
+    // 定期监控内存使用情况
+    setInterval(function() {
+        // 输出内存使用情况
+        if (guangFuRoadTileset) {
+            const memoryUsageMB = (guangFuRoadTileset.totalMemoryUsageInBytes / (1024 * 1024)).toFixed(2);
+            const memoryLimitMB = guangFuRoadTileset.maximumMemoryUsage;
+            
+            console.log(`3D Tiles 内存使用情况: ${memoryUsageMB} MB / ${memoryLimitMB} MB`);
+            
+            // 当内存使用超过6000MB时，进行内存释放
+            if (guangFuRoadTileset.totalMemoryUsageInBytes > 6000 * 1024 * 1024) {
+                console.warn('内存使用超过6000MB，执行内存释放...');
+                
+                // 提高屏幕空间误差，减少瓦片细节
+                const originalSSE = guangFuRoadTileset.maximumScreenSpaceError;
+                guangFuRoadTileset.maximumScreenSpaceError = 64; // 临时设置为非常高的值
+                
+                // 强制卸载所有非必要瓦片
+                guangFuRoadTileset.trimLoadedTiles();
+                
+                // 强制重新渲染场景
+                viewer.scene.requestRender();
+                
+                // 恢复原始设置
+                setTimeout(function() {
+                    guangFuRoadTileset.maximumScreenSpaceError = originalSSE;
+                    viewer.scene.requestRender();
+                }, 3000); // 3秒后恢复
+            }
+        }
+    }, 15000); // 每15秒执行一次
+    
+    // 添加摄像机移动开始事件监听器
+    viewer.camera.moveStart.addEventListener(function() {
+        // 摄像机开始移动时，可以临时提高屏幕空间误差以减少加载的瓦片数量
+        guangFuRoadTileset.maximumScreenSpaceError = 32; // 移动时使用较大的误差值
+        
+        // 暂停瓦片请求，减少移动时的加载
+        guangFuRoadTileset.cullRequestsWhileMoving = true;
+    });
+    
+    // 添加摄像机移动结束事件监听器
+    viewer.camera.moveEnd.addEventListener(function() {
+        // 摄像机停止移动后，恢复正常的屏幕空间误差以提高质量
+        guangFuRoadTileset.maximumScreenSpaceError = 16; // 静止时使用较小的误差值
+        
+        // 手动触发瓦片卸载和内存回收
+        setTimeout(function() {
+            // 手动触发瓦片卸载
+            guangFuRoadTileset.trimLoadedTiles();
+            
+            // 清理未使用的资源
+            viewer.scene.requestRender();
+        }, 1000);
+    });
     
     // 设置摄像机位置
     viewer.camera.setView({
@@ -129,10 +202,27 @@ document.addEventListener('DOMContentLoaded', async function() {
             // 开始降雨
             rain(viewer);
             rainControlBtn.textContent = '停止降雨';
+            
+            // 启用场景持续渲染，确保雨效果动画
+            viewer.scene.requestRenderMode = false;
+            
+            // 添加场景后处理事件监听，确保雨效果动画流畅
+            if (!viewer._rainRenderLoop) {
+                viewer._rainRenderLoop = true;
+                viewer.scene.postRender.addEventListener(function() {
+                    if (viewer._rainRenderLoop) {
+                        viewer.scene.requestRender();
+                    }
+                });
+            }
         } else {
             // 停止降雨
             stopRain(viewer);
             rainControlBtn.textContent = '开始降雨';
+            
+            // 恢复按需渲染模式，节省资源
+            viewer.scene.requestRenderMode = true;
+            viewer._rainRenderLoop = false;
         }
     });
     
@@ -205,6 +295,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 将viewer对象暴露到全局作用域，以便其他脚本可以访问
     window.cesiumViewer = viewer;
+
+    // 初始化绘图工具
+    initDrawTools(viewer);
+
+    // 添加绘制矩形按钮事件监听
+    const drawRectangleBtn = document.getElementById('DrawRectangle');
+    drawRectangleBtn.addEventListener('click', function() {
+        if (drawRectangleBtn.textContent === '开始绘制') {
+            // 开始绘制矩形
+            startDrawRectangle(viewer);
+            drawRectangleBtn.textContent = '完成绘制';
+        } else {
+            // 停止绘制矩形
+            stopDrawRectangle(viewer);
+            drawRectangleBtn.textContent = '开始绘制';
+        }
+    });
 
     console.log('Cesium初始化完成');
 });

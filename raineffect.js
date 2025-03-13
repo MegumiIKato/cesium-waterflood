@@ -1,4 +1,6 @@
 var lastState;
+var rainAnimationHandler;
+
 export function rain(viewer){
     var rainEffect = new Cesium.PostProcessStage({
         fragmentShader:`
@@ -24,9 +26,25 @@ export function rain(viewer){
     });
     viewer.scene.postProcessStages.add(rainEffect);
     lastState = rainEffect;
+    
+    if (viewer.scene.requestRenderMode) {
+        if (!rainAnimationHandler) {
+            rainAnimationHandler = function() {
+                if (lastState) {
+                    viewer.scene.requestRender();
+                    requestAnimationFrame(rainAnimationHandler);
+                }
+            };
+            requestAnimationFrame(rainAnimationHandler);
+        }
+    }
 }
 
 export function stopRain(viewer){
-    viewer.scene.postProcessStages.remove(lastState);
-    lastState = null;
+    if (lastState) {
+        viewer.scene.postProcessStages.remove(lastState);
+        lastState = null;
+    }
+    
+    rainAnimationHandler = null;
 }
