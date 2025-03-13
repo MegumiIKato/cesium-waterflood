@@ -10,13 +10,14 @@
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
-    <script src="index.js"></script>
+    <script type="module" src="main.js"></script>
     <title>城市洪涝灾害模拟仿真平台</title>
 </head>
 <body>
     <header class="header">
         <div class="header-title">城市洪涝灾害模拟仿真平台</div>
         <div class="header-buttons">
+            <button class="header-btn" id="RainControl">开始降雨</button>
             <button class="header-btn">开始</button>
             <button class="header-btn">终止</button>
         </div>

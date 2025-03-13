@@ -1,7 +1,8 @@
+import { rain, stopRain } from './raineffect.js';
 // 等待DOM加载完成后执行
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+
     // 设置Cesium Ion访问令牌
-    // 注意：这里使用的是默认令牌，建议替换为您自己的访问令牌
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4ZDA3NzgyZi1hN2I4LTQ5OTItYmJlMS0yNzk3MTVkYjI0ZDUiLCJpZCI6MTIwMzcyLCJpYXQiOjE2NzI5MDA2ODN9.eiM100rpfWfXX_eQJ2Y3GjFgP6eR2H4L6GLLM2IUUwk';
     
     // 天地图密钥
@@ -35,7 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewer = new Cesium.Viewer('cesiumContainer', {
         // 配置查看器选项
         imageryProvider: tdtImgProvider, // 使用天地图影像作为底图
-        terrainProvider: Cesium.createWorldTerrain(), // 使用全球地形
+        terrainProvider: await Cesium.createWorldTerrainAsync({
+            requestWaterMask: true,//请求水面掩膜。这会使得地形数据中的水体区域呈现得更真实。
+            requestVertexNormals: true,//请求地形的顶点法线，这对于渲染光照和阴影效果非常重要
+          }), // 使用全球地形
         animation: false, // 隐藏动画控件
         baseLayerPicker: false, // 隐藏图层选择器，因为我们使用自定义底图
         fullscreenButton: false, // 显示全屏按钮
@@ -102,30 +106,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // 添加tileset到场景
     viewer.scene.primitives.add(guangFuRoadTileset);
     
-    // 当tileset加载完成后，设置视角到模型区域
-    guangFuRoadTileset.readyPromise.then(function(tileset) {
-        // 使用提供的相机参数作为初始视角
-        viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(
-                102.684693, // 经度
-                24.987954,  // 纬度
-                2116.44     // 高度
-            ),
-            orientation: {
-                heading: Cesium.Math.toRadians(19.21), // 朝向
-                pitch: Cesium.Math.toRadians(-42.75),  // 俯仰角
-                roll: Cesium.Math.toRadians(0.00)      // 翻滚角
-            },
-            duration: 2.0 // 飞行时间（秒）
-        });
-        
-        console.log('GuangFuRoad 3DTiles模型加载完成');
-        console.log('相机已设置到预定义视角');
-        
-        // 初始化鼠标位置信息面板
-        initMousePositionPanel();
-    }).otherwise(function(error) {
-        console.error('加载GuangFuRoad 3DTiles模型失败:', error);
+    // 设置摄像机位置
+    viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(
+            102.684693, // 经度
+            24.987954,  // 纬度
+            2116.44     // 高度
+        ),
+        orientation: {
+            heading: Cesium.Math.toRadians(19.21), // 朝向
+            pitch: Cesium.Math.toRadians(-42.75),  // 俯仰角
+            roll: Cesium.Math.toRadians(0.00)      // 翻滚角
+        }
+    });
+
+    initMousePositionPanel(); // 初始化鼠标位置信息面板
+
+    // 添加降雨按钮事件监听
+    const rainControlBtn = document.getElementById('RainControl');
+    rainControlBtn.addEventListener('click', function() {
+        if (rainControlBtn.textContent === '开始降雨') {
+            // 开始降雨
+            rain(viewer);
+            rainControlBtn.textContent = '停止降雨';
+        } else {
+            // 停止降雨
+            stopRain(viewer);
+            rainControlBtn.textContent = '开始降雨';
+        }
     });
     
     // 初始化鼠标位置信息面板
@@ -197,6 +205,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 将viewer对象暴露到全局作用域，以便其他脚本可以访问
     window.cesiumViewer = viewer;
-    
+
     console.log('Cesium初始化完成');
 });
