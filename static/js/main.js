@@ -199,10 +199,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 添加降雨按钮事件监听
     const rainControlBtn = document.getElementById('RainControl');
     rainControlBtn.addEventListener('click', function() {
-        if (rainControlBtn.textContent === '开始降雨') {
+        if (rainControlBtn.textContent === '显示降雨效果') {
             // 开始降雨
             rain(viewer);
-            rainControlBtn.textContent = '停止降雨';
+            rainControlBtn.textContent = '停止降雨效果';
             
             // 启用场景持续渲染，确保雨效果动画
             viewer.scene.requestRenderMode = false;
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         } else {
             // 停止降雨
             stopRain(viewer);
-            rainControlBtn.textContent = '开始降雨';
+            rainControlBtn.textContent = '显示降雨效果';
             
             // 恢复按需渲染模式，节省资源
             viewer.scene.requestRenderMode = true;
@@ -297,22 +297,22 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 将viewer对象暴露到全局作用域，以便其他脚本可以访问
     window.cesiumViewer = viewer;
 
-    // 初始化绘图工具
-    initDrawTools(viewer);
+    // // 初始化绘图工具
+    // initDrawTools(viewer);
 
-    // 添加绘制矩形按钮事件监听
-    const drawRectangleBtn = document.getElementById('DrawRectangle');
-    drawRectangleBtn.addEventListener('click', function() {
-        if (drawRectangleBtn.textContent === '开始绘制') {
-            // 开始绘制矩形
-            startDrawRectangle(viewer);
-            drawRectangleBtn.textContent = '完成绘制';
-        } else {
-            // 停止绘制矩形
-            stopDrawRectangle(viewer);
-            drawRectangleBtn.textContent = '开始绘制';
-        }
-    });
+    // // 添加绘制矩形按钮事件监听
+    // const drawRectangleBtn = document.getElementById('DrawRectangle');
+    // drawRectangleBtn.addEventListener('click', function() {
+    //     if (drawRectangleBtn.textContent === '开始绘制') {
+    //         // 开始绘制矩形
+    //         startDrawRectangle(viewer);
+    //         drawRectangleBtn.textContent = '完成绘制';
+    //     } else {
+    //         // 停止绘制矩形
+    //         stopDrawRectangle(viewer);
+    //         drawRectangleBtn.textContent = '开始绘制';
+    //     }
+    // });
     console.log('Cesium初始化完成');
 
     // 添加SWMM模拟按钮事件监听
