@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWMM文件管理</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/swmm.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SWMM模拟系统</h1>
+        <div class="upload-section">
+            <h2>上传模拟文件与降雨文件</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="file-input-group">
+                    <label>模拟文件 (.inp):</label>
+                    <input type="file" name="swmm_file" accept=".inp" required>
+                </div>
+                <div class="file-input-group">
+                    <label>降雨文件 (.dat):</label>
+                    <input type="file" name="rain_file" accept=".dat" required>
+                </div>
+                <button type="submit" class="btn">上传文件</button>
+            </form>
+            <div id="uploadStatus" class="status-message"></div>
+        </div>
+
+        <div class="simulation-section">
+            <div class="simulation-status-box" id="simulationStatusBox">
+                <div id="simulationStatus">等待开始模拟...</div>
+            </div>
+            <button id="startSimulation" class="btn" disabled>开始模拟</button>
+        </div>
+
+        <div class="download-section">
+            <h2>下载模拟结果报告</h2>
+            <div class="file-list">
+                <div class="file-item">
+                    <span>rpt报告</span>
+                    <button class="btn" disabled>下载</button>
+                </div>
+                <div class="file-item">
+                    <span>out报告</span>
+                    <button class="btn" disabled>下载</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSwmmFile = null;
+        let currentRainFile = null;
+
+        // 更新按钮状态的函数
+        function updateButtonStates() {
+            const startSimulationBtn = document.getElementById('startSimulation');
+            const downloadButtons = document.querySelectorAll('.file-item button');
+            
+            // 只有在有SWMM文件时才启用开始模拟按钮
+            startSimulationBtn.disabled = !currentSwmmFile;
+            
+            // 下载按钮默认禁用
+            downloadButtons.forEach(btn => {
+                btn.disabled = true;
+            });
+        }
+
+        // 页面加载时初始化按钮状态
+        document.addEventListener('DOMContentLoaded', updateButtonStates);
+
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const statusDiv = document.getElementById('uploadStatus');
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.textContent = `${result.message}：模拟文件 ${result.swmm_file}，降雨文件 ${result.rain_file}`;
+                    statusDiv.className = 'status-message success';
+                    currentSwmmFile = result.swmm_file;
+                    currentRainFile = result.rain_file;
+                    this.reset();
+                    updateButtonStates(); // 更新按钮状态
+                } else {
+                    statusDiv.textContent = result.error;
+                    statusDiv.className = 'status-message error';
+                }
+            } catch (error) {
+                statusDiv.textContent = '上传失败，请重试';
+                statusDiv.className = 'status-message error';
+            }
+        });
+
+        document.getElementById('startSimulation').addEventListener('click', async function() {
+            if (!currentSwmmFile) {
+                alert('请先上传SWMM文件');
+                return;
+            }
+
+            const statusBox = document.getElementById('simulationStatusBox');
+            const statusText = document.getElementById('simulationStatus');
+            const startButton = this;
+
+            statusBox.className = 'simulation-status-box running';
+            statusText.textContent = '模拟正在进行中...';
+            startButton.disabled = true;
+
+            try {
+                const response = await fetch(`/run_swmm?swmm_file=${currentSwmmFile}`);
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    statusBox.className = 'simulation-status-box success';
+                    statusText.textContent = result.message;
+                    
+                    // 更新下载按钮
+                    const fileItems = document.querySelectorAll('.file-item');
+                    const swmmFileName = currentSwmmFile.replace('.inp', '');
+                    const downloadButtons = Array.from(fileItems).map(item => item.querySelector('button'));
+                    
+                    // 启用下载按钮并设置点击事件
+                    downloadButtons.forEach(btn => {
+                        btn.disabled = false;
+                    });
+                    
+                    fileItems[0].querySelector('button').onclick = () => window.location.href = `/simulation_result/${swmmFileName}.rpt`;
+                    fileItems[1].querySelector('button').onclick = () => window.location.href = `/simulation_result/${swmmFileName}.out`;
+                } else {
+                    statusBox.className = 'simulation-status-box error';
+                    statusText.textContent = result.message;
+                    // 禁用下载按钮
+                    const downloadButtons = document.querySelectorAll('.file-item button');
+                    downloadButtons.forEach(btn => {
+                        btn.disabled = true;
+                    });
+                }
+            } catch (error) {
+                statusBox.className = 'simulation-status-box error';
+                statusText.textContent = `模拟过程发生错误: ${error.message || '未知错误'}`;
+                // 禁用下载按钮
+                const downloadButtons = document.querySelectorAll('.file-item button');
+                downloadButtons.forEach(btn => {
+                    btn.disabled = true;
+                });
+            } finally {
+                startButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 创建GuangFuRoad 3DTiles数据
     const guangFuRoadTileset = new Cesium.Cesium3DTileset({
-        url: 'GuangFuRoad/tileset.json',
+        url: '../static/GuangFuRoad/tileset.json',
         modelMatrix: modelMatrix, // 设置模型变换矩阵，用于偏移模型位置
         maximumScreenSpaceError: 16, // 最大屏幕空间误差，值越小模型越精细，但性能消耗越大
         maximumMemoryUsage: 6000, // 最大内存使用量（MB）
@@ -194,6 +194,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     initMousePositionPanel(); // 初始化鼠标位置信息面板
+
 
     // 添加降雨按钮事件监听
     const rainControlBtn = document.getElementById('RainControl');
@@ -312,6 +313,26 @@ document.addEventListener('DOMContentLoaded', async function() {
             drawRectangleBtn.textContent = '开始绘制';
         }
     });
-
     console.log('Cesium初始化完成');
+
+    // 添加SWMM模拟按钮事件监听
+    const swmmControlBtn = document.getElementById('SWMMControl');
+    const swmmModal = document.getElementById('swmmModal');
+    const closeBtn = document.querySelector('.close');
+
+    swmmControlBtn.addEventListener('click', function() {
+        swmmModal.style.display = 'block';
+    });
+
+    closeBtn.addEventListener('click', function() {
+        swmmModal.style.display = 'none';
+    });
+
+    // 点击模态框外部关闭
+    window.addEventListener('click', function(event) {
+        if (event.target === swmmModal) {
+            swmmModal.style.display = 'none';
+        }
+    });
+    
 });

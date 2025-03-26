@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/modal.css">
     <!-- Cesium CSS -->
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <!-- Cesium JS -->
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
-    <!-- Vue JS -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="../static/js/main.js"></script>
     <title>城市洪涝灾害模拟仿真平台</title>
 </head>
 <body>
@@ -18,8 +17,7 @@
         <div class="header-title">城市洪涝灾害模拟仿真平台</div>
         <div class="header-buttons">
             <button class="header-btn" id="RainControl">开始降雨</button>
-            <button class="header-btn" id="StartFlood">开始模拟</button>
-            <button class="header-btn" id="StopFlood">终止模拟</button>
+            <button class="header-btn" id="SWMMControl">SWMM模拟</button>
             <button class="header-btn" id="DrawRectangle">开始绘制</button>
         </div>
     </header>
@@ -40,5 +38,19 @@
     <footer class="footer">
         <div class="copyright">© 2025 城市洪涝灾害模拟仿真平台 版权所有 云南大学 Yunnan University</div>
     </footer>
+
+    <!-- SWMM模拟模态框 -->
+    <div id="swmmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <h2>SWMM模拟</h2> -->
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <iframe id="swmmFrame" src="/swmm" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+
 </body>
-</html>
+</html> 
