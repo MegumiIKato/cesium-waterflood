@@ -3,6 +3,10 @@ from pyswmm import Simulation
 import os
 import shutil
 import time
+import mimetypes
+
+# 确保.js文件使用正确的MIME类型
+mimetypes.add_type('application/javascript', '.js')
 
 app = Flask(__name__)
 
