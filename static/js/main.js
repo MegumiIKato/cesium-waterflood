@@ -1,5 +1,6 @@
 import { rain, stopRain } from './raineffect.js';
 import { initDrawTools, startDrawRectangle, stopDrawRectangle } from './drawtools.js';
+import { initModelAdjuster } from './modeladjuster.js';
 // 等待DOM加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
 
@@ -57,7 +58,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         shadows: false, // 禁用阴影
         requestRenderMode: true, // 启用请求渲染模式，减少不必要的渲染
         maximumRenderTimeChange: Infinity, // 设置最大渲染时间变化
+        sceneMode: Cesium.SceneMode.SCENE3D, // 设置为3D地球模式
+        mapProjection: new Cesium.WebMercatorProjection() // 使用Web墨卡托投影
     });
+    
+    // 设置视图控制
+    viewer.scene.screenSpaceCameraController.enableTilt = true; // 启用倾斜
+    viewer.scene.screenSpaceCameraController.enableRotate = true; // 启用旋转
     
     // 隐藏左下角的Cesium Ion标志和归因信息
     viewer._cesiumWidget._creditContainer.style.display = "none";
@@ -74,9 +81,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 2. y方向平移（米）- 南北方向
     // 3. z方向平移（米）- 垂直方向
     const modelOffset = {
-        x: 0.0,    // 向东偏移量（米）
-        y: 0.0,    // 向北偏移量（米）
-        z: -30.0     // 向上偏移量（米）
+        x: 47.44,    // 向西偏移
+        y: -20.28,     // 向北偏移
+        z: 69.81       // 向下偏移
     };
     
     // 创建模型变换矩阵
@@ -111,6 +118,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 添加tileset到场景
     viewer.scene.primitives.add(guangFuRoadTileset);
+    
+    // 初始化模型调整工具
+    // initModelAdjuster(viewer, guangFuRoadTileset);
     
     // 启用视锥体裁剪 - 仅加载摄像机视野内的瓦片
     viewer.scene.globe.cullWithChildrenBounds = true;
@@ -193,6 +203,47 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
+    // 加载GeoJSON数据
+    fetch('../static/geojson/point.geojson')
+    .then(response => response.json())
+    .then(data => {
+        // 定义EPSG:32647坐标系统（UTM Zone 47N）
+        proj4.defs("EPSG:32647", "+proj=utm +zone=47 +datum=WGS84 +units=m +no_defs");
+
+        // 移除CRS定义
+        delete data.crs;
+
+        // 为每个点创建实体
+        data.features.forEach(feature => {
+            if (feature.geometry && feature.geometry.coordinates) {
+                // 从EPSG:32647转换到WGS84
+                const [x, y] = feature.geometry.coordinates;
+                const [lon, lat] = proj4('EPSG:32647', 'EPSG:4326', [x, y]);
+                const height = feature.properties.HIGH || 0; // 使用属性中的高度值
+
+                // 创建点实体
+                viewer.entities.add({
+                    position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+                    point: {
+                        pixelSize: 8,
+                        color: Cesium.Color.BLUE.withAlpha(0.7),
+                        outlineColor: Cesium.Color.WHITE,
+                        outlineWidth: 2,
+                        heightReference: Cesium.HeightReference.CLAMP_TO_3D_MODEL, // 紧贴3D模型
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY // 禁用深度测试
+                    },
+                    properties: feature.properties // 保存属性信息
+                });
+            }
+        });
+        
+        // 自动定位到数据范围
+        // viewer.zoomTo(viewer.entities);
+    })
+    .catch(error => {
+        console.error('加载GeoJSON数据失败:', error);
+    });
+    
     initMousePositionPanel(); // 初始化鼠标位置信息面板
 
 
