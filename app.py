@@ -4,6 +4,9 @@ import os
 import shutil
 import time
 from utils import extract_node_depth_data, update_geojson_with_depth_data
+import mimetypes
+
+mimetypes.add_type('application/javascript', '.js')
 
 app = Flask(__name__)
 

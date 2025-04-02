@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     // 加载GeoJSON数据
-    fetch('../static/geojson/point_with_depth.geojson')
+    fetch('/static/geojson/point_with_depth.geojson')
     .then(response => response.json())
     .then(data => {
         // 定义EPSG:32647坐标系统（UTM Zone 47N）
