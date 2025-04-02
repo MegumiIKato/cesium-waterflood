@@ -3,6 +3,7 @@ from pyswmm import Simulation
 import os
 import shutil
 import time
+from utils import extract_node_depth_data, update_geojson_with_depth_data
 
 app = Flask(__name__)
 
@@ -121,6 +122,91 @@ def download_result(filename):
             "status": "error",
             "message": f"下载失败: {str(e)}"
         }), 500
+
+# 加载模拟结果并更新GeoJSON文件
+@app.route('/load_simulation_result', methods=['POST'])
+def load_simulation_result():
+    try:
+        # 查找所有RPT文件
+        rpt_files = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if f.endswith('.rpt')]
+        
+        if not rpt_files:
+            return jsonify({
+                "status": "error",
+                "message": "找不到RPT文件，请先完成SWMM模拟"
+            }), 404
+            
+        # 获取最新的RPT文件
+        latest_rpt = max(rpt_files, key=lambda x: os.path.getmtime(os.path.join(app.config['UPLOAD_FOLDER'], x)))
+        rpt_file_path = os.path.join(app.config['UPLOAD_FOLDER'], latest_rpt)
+        
+        print(f"使用最新的RPT文件: {rpt_file_path}")
+        
+        # 提取节点深度数据
+        node_data = extract_node_depth_data(rpt_file_path)
+        
+        if not node_data:
+            return jsonify({
+                "status": "error",
+                "message": "无法从RPT文件提取节点深度数据"
+            }), 500
+        
+        # 指定GeoJSON文件路径
+        geojson_file_path = os.path.join("static", "geojson", "point.geojson")
+        output_file_path = os.path.join("static", "geojson", "point_with_depth.geojson")
+        
+        # 检查源文件是否存在
+        if not os.path.exists(geojson_file_path):
+            return jsonify({
+                "status": "error",
+                "message": f"找不到GeoJSON源文件: {geojson_file_path}"
+            }), 404
+            
+        # 确保输出目录存在
+        os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+        
+        # 更新GeoJSON文件
+        try:
+            updated_geojson = update_geojson_with_depth_data(geojson_file_path, node_data, output_file_path)
+            
+            return jsonify({
+                "status": "success",
+                "message": f"成功加载模拟结果({latest_rpt})并更新GeoJSON文件",
+                "nodes_count": len(node_data),
+                "updated_file": output_file_path
+            })
+        except Exception as e:
+            return jsonify({
+                "status": "error",
+                "message": f"更新GeoJSON文件失败: {str(e)}"
+            }), 500
+            
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"处理模拟结果时发生错误: {str(e)}"
+        }), 500
+
+# 检查是否有可用的模拟结果
+@app.route('/check_simulation_result', methods=['GET'])
+def check_simulation_result():
+    # 检查是否有rpt文件
+    rpt_files = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if f.endswith('.rpt')]
+    
+    if rpt_files:
+        # 返回最新的rpt文件
+        latest_rpt = max(rpt_files, key=lambda x: os.path.getmtime(os.path.join(app.config['UPLOAD_FOLDER'], x)))
+        
+        return jsonify({
+            "status": "success",
+            "has_result": True,
+            "latest_result": latest_rpt
+        })
+    else:
+        return jsonify({
+            "status": "success",
+            "has_result": False
+        })
 
 if __name__ == '__main__':
     app.run(debug=True)

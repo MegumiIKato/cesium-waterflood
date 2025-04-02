@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     // 加载GeoJSON数据
-    fetch('../static/geojson/point.geojson')
+    fetch('../static/geojson/point_with_depth.geojson')
     .then(response => response.json())
     .then(data => {
         // 定义EPSG:32647坐标系统（UTM Zone 47N）
@@ -212,6 +212,22 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         // 移除CRS定义
         delete data.crs;
+        
+        // 定义深度分级颜色
+        const depthColorMap = {
+            "低于1米": Cesium.Color.GREEN.withAlpha(0.7),
+            "1-2米": Cesium.Color.BLUE.withAlpha(0.7),
+            "大于2米": Cesium.Color.RED.withAlpha(0.7)
+        };
+        
+        // 定义统一点尺寸
+        const pointSize = 10;
+        
+        // 默认蓝色
+        const defaultColor = Cesium.Color.BLUE.withAlpha(0.7);
+        
+        // 存储所有点实体的数组，以便后续更新
+        const pointEntities = [];
 
         // 为每个点创建实体
         data.features.forEach(feature => {
@@ -220,13 +236,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const [x, y] = feature.geometry.coordinates;
                 const [lon, lat] = proj4('EPSG:32647', 'EPSG:4326', [x, y]);
                 const height = feature.properties.HIGH || 0; // 使用属性中的高度值
-
-                // 创建点实体
-                viewer.entities.add({
+                
+                // 创建点实体（初始统一蓝色）
+                const entity = viewer.entities.add({
                     position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
                     point: {
-                        pixelSize: 8,
-                        color: Cesium.Color.BLUE.withAlpha(0.7),
+                        pixelSize: pointSize,
+                        color: defaultColor,
                         outlineColor: Cesium.Color.WHITE,
                         outlineWidth: 2,
                         heightReference: Cesium.HeightReference.CLAMP_TO_3D_MODEL, // 紧贴3D模型
@@ -234,7 +250,69 @@ document.addEventListener('DOMContentLoaded', async function() {
                     },
                     properties: feature.properties // 保存属性信息
                 });
+                
+                // 将实体和深度信息存储在数组中
+                pointEntities.push({
+                    entity: entity,
+                    depth: feature.properties.AVG_DEPTH || 0
+                });
             }
+        });
+        
+        // 添加节点积水情况按钮事件监听
+        const nodeStatusBtn = document.getElementById('NodeStatus');
+        // 初始化按钮状态
+        nodeStatusBtn.setAttribute('data-status', 'inactive');
+        
+        nodeStatusBtn.addEventListener('click', function() {
+            // 保存当前渲染模式设置
+            const currentRenderMode = viewer.scene.requestRenderMode;
+            
+            if (nodeStatusBtn.getAttribute('data-status') === 'inactive') {
+                // 激活分级显示
+                pointEntities.forEach(item => {
+                    // 根据深度确定颜色
+                    let pointColor;
+                    if (item.depth < 1) {
+                        pointColor = depthColorMap["低于1米"];
+                    } else if (item.depth >= 1 && item.depth <= 2) {
+                        pointColor = depthColorMap["1-2米"];
+                    } else {
+                        pointColor = depthColorMap["大于2米"];
+                    }
+                    
+                    // 更新点颜色
+                    item.entity.point.color = pointColor;
+                });
+                
+                // 创建分级图例
+                createLegend(depthColorMap);
+                
+                // 更新按钮状态
+                nodeStatusBtn.setAttribute('data-status', 'active');
+                nodeStatusBtn.textContent = '恢复默认显示';
+            } else {
+                // 恢复统一蓝色
+                pointEntities.forEach(item => {
+                    item.entity.point.color = defaultColor;
+                });
+                
+                // 移除图例
+                let legend = document.getElementById('pointLegend');
+                if (legend) {
+                    legend.remove();
+                }
+                
+                // 更新按钮状态
+                nodeStatusBtn.setAttribute('data-status', 'inactive');
+                nodeStatusBtn.textContent = '节点积水情况';
+            }
+            
+            // 保持渲染设置与原来一致 - 如果雨效果正在运行，保持持续渲染
+            viewer.scene.requestRenderMode = currentRenderMode;
+            
+            // 无论如何，强制重新渲染一次场景
+            viewer.scene.requestRender();
         });
         
         // 自动定位到数据范围
@@ -244,25 +322,97 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error('加载GeoJSON数据失败:', error);
     });
     
+    // 创建颜色图例函数
+    function createLegend(colorMap) {
+        // 检查是否已存在图例
+        let legend = document.getElementById('pointLegend');
+        if (legend) {
+            legend.remove();
+        }
+        
+        // 创建图例容器
+        legend = document.createElement('div');
+        legend.id = 'pointLegend';
+        legend.style.position = 'absolute';
+        legend.style.bottom = '80px';
+        legend.style.left = '20px';
+        legend.style.backgroundColor = 'rgba(40, 40, 40, 0.8)';
+        legend.style.color = 'white';
+        legend.style.padding = '20px';
+        legend.style.borderRadius = '10px';
+        legend.style.fontFamily = 'Arial, sans-serif';
+        legend.style.fontSize = '18px';
+        legend.style.zIndex = '1000';
+        legend.style.minWidth = '180px';
+        legend.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.5)';
+        
+        // 创建图例标题
+        const title = document.createElement('div');
+        title.textContent = '积水深度';
+        title.style.fontWeight = 'bold';
+        title.style.marginBottom = '15px';
+        title.style.borderBottom = '2px solid white';
+        title.style.paddingBottom = '10px';
+        title.style.fontSize = '22px';
+        title.style.textAlign = 'center';
+        legend.appendChild(title);
+        
+        // 显示深度分级图例
+        Object.keys(colorMap).forEach(levelName => {
+            const item = document.createElement('div');
+            item.style.marginTop = '12px';
+            item.style.display = 'flex';
+            item.style.alignItems = 'center';
+            item.style.marginBottom = '12px';
+            
+            const colorBox = document.createElement('span');
+            colorBox.style.display = 'inline-block';
+            colorBox.style.width = '24px';
+            colorBox.style.height = '24px';
+            colorBox.style.marginRight = '15px';
+            colorBox.style.border = '2px solid white';
+            
+            // 将Cesium颜色转换为CSS颜色
+            const color = colorMap[levelName];
+            const cssColor = `rgba(${Math.floor(color.red * 255)}, ${Math.floor(color.green * 255)}, ${Math.floor(color.blue * 255)}, ${color.alpha})`;
+            colorBox.style.backgroundColor = cssColor;
+            
+            item.appendChild(colorBox);
+            item.appendChild(document.createTextNode(levelName));
+            legend.appendChild(item);
+        });
+        
+        // 添加到文档
+        document.body.appendChild(legend);
+    }
+    
     initMousePositionPanel(); // 初始化鼠标位置信息面板
 
 
     // 添加降雨按钮事件监听
     const rainControlBtn = document.getElementById('RainControl');
+    // 初始化雨效果状态
+    rainControlBtn.setAttribute('data-status', 'inactive');
+    
+    // 定义一个变量跟踪是否需要持续渲染
+    let needContinuousRendering = false;
+    
     rainControlBtn.addEventListener('click', function() {
-        if (rainControlBtn.textContent === '显示降雨效果') {
+        if (rainControlBtn.getAttribute('data-status') === 'inactive') {
             // 开始降雨
             rain(viewer);
             rainControlBtn.textContent = '停止降雨效果';
+            rainControlBtn.setAttribute('data-status', 'active');
             
             // 启用场景持续渲染，确保雨效果动画
+            needContinuousRendering = true;
             viewer.scene.requestRenderMode = false;
             
             // 添加场景后处理事件监听，确保雨效果动画流畅
             if (!viewer._rainRenderLoop) {
                 viewer._rainRenderLoop = true;
                 viewer.scene.postRender.addEventListener(function() {
-                    if (viewer._rainRenderLoop) {
+                    if (needContinuousRendering) {
                         viewer.scene.requestRender();
                     }
                 });
@@ -271,11 +421,15 @@ document.addEventListener('DOMContentLoaded', async function() {
             // 停止降雨
             stopRain(viewer);
             rainControlBtn.textContent = '显示降雨效果';
+            rainControlBtn.setAttribute('data-status', 'inactive');
             
             // 恢复按需渲染模式，节省资源
+            needContinuousRendering = false;
             viewer.scene.requestRenderMode = true;
-            viewer._rainRenderLoop = false;
         }
+        
+        // 无论开启还是关闭雨效果，都强制重新渲染一次
+        viewer.scene.requestRender();
     });
     
     // 初始化鼠标位置信息面板
@@ -386,4 +540,43 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
     
+    // 获取按钮引用
+    const loadResultBtn = document.getElementById('LoadResult');
+    const nodeStatusBtn = document.getElementById('NodeStatus');
+    
+    // 添加加载模拟结果按钮事件监听
+    if (loadResultBtn) {
+        loadResultBtn.addEventListener('click', function() {
+            // 显示加载中状态
+            loadResultBtn.disabled = true;
+            loadResultBtn.textContent = '正在加载数据...';
+            
+            // 直接调用加载模拟结果接口，让后端自动获取最新的RPT文件
+            fetch('/load_simulation_result', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})  // 空对象，不传递文件名
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('成功加载模拟结果：' + data.message);
+                    // 更新页面，重新加载GeoJSON数据
+                    location.reload();
+                } else {
+                    alert('加载模拟结果失败: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('加载模拟结果出错:', error);
+                alert('加载模拟结果出错: ' + error.message);
+            })
+            .finally(() => {
+                loadResultBtn.disabled = false;
+                loadResultBtn.textContent = '加载模拟结果';
+            });
+        });
+    }
 });
