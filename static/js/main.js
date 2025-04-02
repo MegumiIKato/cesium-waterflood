@@ -1,6 +1,6 @@
-import { rain, stopRain } from './raineffect.js';
-import { initDrawTools, startDrawRectangle, stopDrawRectangle } from './drawtools.js';
-import { initModelAdjuster } from './modeladjuster.js';
+import { rain, stopRain } from '/static/js/raineffect.js';
+import { initDrawTools, startDrawRectangle, stopDrawRectangle } from '/static/js/drawtools.js';
+import { initModelAdjuster } from '/static/js/modeladjuster.js';
 // 等待DOM加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
 
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 创建GuangFuRoad 3DTiles数据
     const guangFuRoadTileset = new Cesium.Cesium3DTileset({
-        url: '../static/GuangFuRoad/tileset.json',
+        url: '/static/GuangFuRoad/tileset.json',
         modelMatrix: modelMatrix, // 设置模型变换矩阵，用于偏移模型位置
         maximumScreenSpaceError: 16, // 最大屏幕空间误差，值越小模型越精细，但性能消耗越大
         maximumMemoryUsage: 6000, // 最大内存使用量（MB）
