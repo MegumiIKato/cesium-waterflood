@@ -51,7 +51,7 @@ def extract_node_depth_data(rpt_file_path):
     
     return node_data
 
-def print_node_depth_data(data, sort_by_depth=False):
+# def print_node_depth_data(data, sort_by_depth=False):
     """
     打印提取的节点深度数据
     
@@ -131,9 +131,9 @@ def update_geojson_with_depth_data(geojson_file_path, node_depth_data, output_fi
             match_count += 1
     
     # 输出匹配统计
-    print(f"\n{match_count}个节点在GeoJSON文件中找到匹配并更新了深度数据")
-    print(f"GeoJSON中共有{len(geojson_data['features'])}个节点")
-    print(f"深度数据中共有{len(node_depth_data)}个节点")
+    # print(f"\n{match_count}个节点在GeoJSON文件中找到匹配并更新了深度数据")
+    # print(f"GeoJSON中共有{len(geojson_data['features'])}个节点")
+    # print(f"深度数据中共有{len(node_depth_data)}个节点")
     
     # 保存更新后的GeoJSON文件
     if output_file_path is None:
@@ -142,12 +142,12 @@ def update_geojson_with_depth_data(geojson_file_path, node_depth_data, output_fi
     with open(output_file_path, 'w', encoding='utf-8') as file:
         json.dump(geojson_data, file, ensure_ascii=False, indent=2)
     
-    print(f"已保存更新后的GeoJSON文件到: {output_file_path}")
+    # print(f"已保存更新后的GeoJSON文件到: {output_file_path}")
     
     return geojson_data
 
 # 使用示例
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # 替换为实际的rpt文件路径
     rpt_file_path = "file_uploads/gfroad.rpt"
     geojson_file_path = "static/geojson/point.geojson"

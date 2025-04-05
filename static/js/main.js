@@ -85,12 +85,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         y: -20.28,     // 向北偏移
         z: 69.81       // 向下偏移
     };
-    
+
     // 创建模型变换矩阵
     const modelMatrix = Cesium.Matrix4.fromTranslation(
         new Cesium.Cartesian3(modelOffset.x, modelOffset.y, modelOffset.z)
     );
-    
+
     // 创建GuangFuRoad 3DTiles数据
     const guangFuRoadTileset = new Cesium.Cesium3DTileset({
         url: '/static/GuangFuRoad/tileset.json',
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         debugShowViewerRequestVolume: false, // 不显示查看器请求体积
         debugFreezeFrame: false, // 不冻结帧
     });
-    
+
     // 添加tileset到场景
     viewer.scene.primitives.add(guangFuRoadTileset);
     
