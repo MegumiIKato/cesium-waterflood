@@ -54,3 +54,55 @@ def update_geojson_with_depth_data(geojson_file_path, node_depth_data, output_fi
     with open(output_file_path, 'w', encoding='utf-8') as file:
         json.dump(geojson_data, file, ensure_ascii=False, indent=2)  
     return geojson_data
+
+@app.route('/swmm', methods=['GET'])
+def swmm_page():
+    return render_template('swmm.html')
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    swmm_file = request.files['swmm_file']
+    rain_file = request.files['rain_file']
+    try:
+        # 保存SWMM文件
+        swmm_filename = swmm_file.filename
+        swmm_file_path = os.path.join(app.config['UPLOAD_FOLDER'], swmm_filename)
+        swmm_file.save(swmm_file_path)
+        # 保存降雨文件
+        rain_filename = rain_file.filename
+        rain_file_path = os.path.join(app.config['UPLOAD_FOLDER'], rain_filename)
+        rain_file.save(rain_file_path)
+        return jsonify({
+            "message": "文件上传成功",
+            "swmm_file": swmm_filename,
+            "rain_file": rain_filename
+        })
+# SWMM模拟部分
+@app.route('/run_swmm', methods=['GET'])
+def run_swmm():
+    try:
+        # 获取最新上传的文件路径
+        swmm_file_path = os.path.join(app.config['UPLOAD_FOLDER'], request.args.get('swmm_file'))
+        print(f"开始处理文件: {swmm_file_path}")
+        # 运行SWMM模拟
+        sim = Simulation(swmm_file_path)
+        try:
+            sim.execute()
+            print("SWMM模拟完成")
+            # 检查是否生成了报告文件
+            rpt_file = swmm_file_path.replace('.inp', '.rpt')
+            out_file = swmm_file_path.replace('.inp', '.out')
+            return jsonify({
+                "status": "success",
+                "message": "SWMM模拟完成",
+                "rpt_file": os.path.basename(rpt_file),
+                "out_file": os.path.basename(out_file)
+            })
+        finally:
+            sim.close()
+            print("SWMM模拟已关闭")
+    except Exception as e:
+        print(f"模拟过程出错: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": f"模拟过程发生错误: {str(e)}"
+        }), 500
