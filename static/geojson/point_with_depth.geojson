@@ -25,7 +25,7 @@
         "InHigh": 1888.0,
         "PX": 871905.7058,
         "PY": 2768916.3874,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -52,7 +52,7 @@
         "InHigh": 1884.93,
         "PX": 871982.9889,
         "PY": 2769094.367,
-        "AVG_DEPTH": 1.56
+        "AVG_DEPTH": 1.71
       },
       "geometry": {
         "type": "Point",
@@ -79,7 +79,7 @@
         "InHigh": 1884.63,
         "PX": 871988.1339,
         "PY": 2769122.1587,
-        "AVG_DEPTH": 1.78
+        "AVG_DEPTH": 1.96
       },
       "geometry": {
         "type": "Point",
@@ -160,7 +160,7 @@
         "InHigh": 1884.27,
         "PX": 872025.6876,
         "PY": 2768999.6976,
-        "AVG_DEPTH": 2.53
+        "AVG_DEPTH": 2.71
       },
       "geometry": {
         "type": "Point",
@@ -187,7 +187,7 @@
         "InHigh": 1887.84,
         "PX": 872079.8685,
         "PY": 2768912.536,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -214,7 +214,7 @@
         "InHigh": 1885.4,
         "PX": 872085.0092,
         "PY": 2768981.6298,
-        "AVG_DEPTH": 1.29
+        "AVG_DEPTH": 1.49
       },
       "geometry": {
         "type": "Point",
@@ -241,7 +241,7 @@
         "InHigh": 1887.91,
         "PX": 872090.653,
         "PY": 2768966.9197,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -268,7 +268,7 @@
         "InHigh": 1887.91,
         "PX": 872110.9463,
         "PY": 2768933.7022,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -295,7 +295,7 @@
         "InHigh": 1886.85,
         "PX": 872133.4133,
         "PY": 2768783.7975,
-        "AVG_DEPTH": 0.93
+        "AVG_DEPTH": 1.03
       },
       "geometry": {
         "type": "Point",
@@ -349,7 +349,7 @@
         "InHigh": 1885.54,
         "PX": 872161.5805,
         "PY": 2768844.1614,
-        "AVG_DEPTH": 1.28
+        "AVG_DEPTH": 1.51
       },
       "geometry": {
         "type": "Point",
@@ -376,7 +376,7 @@
         "InHigh": 1885.13,
         "PX": 872177.7666,
         "PY": 2768821.3291,
-        "AVG_DEPTH": 1.69
+        "AVG_DEPTH": 1.92
       },
       "geometry": {
         "type": "Point",
@@ -403,7 +403,7 @@
         "InHigh": 1888.29,
         "PX": 872182.5724,
         "PY": 2768810.2877,
-        "AVG_DEPTH": 0.06
+        "AVG_DEPTH": 0.07
       },
       "geometry": {
         "type": "Point",
@@ -430,7 +430,7 @@
         "InHigh": 1885.63,
         "PX": 871903.071,
         "PY": 2768920.2434,
-        "AVG_DEPTH": 1.6
+        "AVG_DEPTH": 1.76
       },
       "geometry": {
         "type": "Point",
@@ -457,7 +457,7 @@
         "InHigh": 1888.03,
         "PX": 872039.2874,
         "PY": 2769055.3083,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -484,7 +484,7 @@
         "InHigh": 1885.58,
         "PX": 872038.8233,
         "PY": 2769080.8367,
-        "AVG_DEPTH": 1.46
+        "AVG_DEPTH": 1.71
       },
       "geometry": {
         "type": "Point",
@@ -511,7 +511,7 @@
         "InHigh": 1887.86,
         "PX": 872057.6718,
         "PY": 2769033.5051,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -538,7 +538,7 @@
         "InHigh": 1887.84,
         "PX": 872066.4275,
         "PY": 2768944.1115,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -565,7 +565,7 @@
         "InHigh": 1881.94,
         "PX": 872064.9939,
         "PY": 2768998.082,
-        "AVG_DEPTH": 4.44
+        "AVG_DEPTH": 4.7
       },
       "geometry": {
         "type": "Point",
@@ -619,7 +619,7 @@
         "InHigh": 1888.14,
         "PX": 872116.5155,
         "PY": 2768855.8854,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -673,7 +673,7 @@
         "InHigh": 1885.08,
         "PX": 872130.0938,
         "PY": 2768901.4975,
-        "AVG_DEPTH": 1.7
+        "AVG_DEPTH": 1.93
       },
       "geometry": {
         "type": "Point",
@@ -727,7 +727,7 @@
         "InHigh": 1888.3,
         "PX": 872154.6551,
         "PY": 2768778.4162,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -754,7 +754,7 @@
         "InHigh": 1884.84,
         "PX": 872164.6187,
         "PY": 2768844.9002,
-        "AVG_DEPTH": 1.92
+        "AVG_DEPTH": 2.17
       },
       "geometry": {
         "type": "Point",
@@ -781,7 +781,7 @@
         "InHigh": 1886.97,
         "PX": 871997.4276,
         "PY": 2769152.7815,
-        "AVG_DEPTH": 0.6
+        "AVG_DEPTH": 0.75
       },
       "geometry": {
         "type": "Point",
@@ -808,7 +808,7 @@
         "InHigh": 1885.67,
         "PX": 871870.0857,
         "PY": 2768870.7294,
-        "AVG_DEPTH": 1.54
+        "AVG_DEPTH": 1.72
       },
       "geometry": {
         "type": "Point",
@@ -835,7 +835,7 @@
         "InHigh": 1885.64,
         "PX": 871875.0963,
         "PY": 2768908.9285,
-        "AVG_DEPTH": 1.59
+        "AVG_DEPTH": 1.76
       },
       "geometry": {
         "type": "Point",
@@ -889,7 +889,7 @@
         "InHigh": 1885.73,
         "PX": 871991.1332,
         "PY": 2768946.9728,
-        "AVG_DEPTH": 1.43
+        "AVG_DEPTH": 1.59
       },
       "geometry": {
         "type": "Point",
@@ -916,7 +916,7 @@
         "InHigh": 1887.93,
         "PX": 871999.3763,
         "PY": 2769061.5595,
-        "AVG_DEPTH": 0.03
+        "AVG_DEPTH": 0.04
       },
       "geometry": {
         "type": "Point",
@@ -943,7 +943,7 @@
         "InHigh": 1886.58,
         "PX": 872011.9914,
         "PY": 2769119.8962,
-        "AVG_DEPTH": 0.73
+        "AVG_DEPTH": 0.95
       },
       "geometry": {
         "type": "Point",
@@ -970,7 +970,7 @@
         "InHigh": 1884.58,
         "PX": 872059.7253,
         "PY": 2768940.2449,
-        "AVG_DEPTH": 2.33
+        "AVG_DEPTH": 2.49
       },
       "geometry": {
         "type": "Point",
@@ -997,7 +997,7 @@
         "InHigh": 1887.75,
         "PX": 872063.0541,
         "PY": 2768942.2322,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -1024,7 +1024,7 @@
         "InHigh": 1884.71,
         "PX": 872094.5984,
         "PY": 2768969.6228,
-        "AVG_DEPTH": 1.98
+        "AVG_DEPTH": 2.2
       },
       "geometry": {
         "type": "Point",
@@ -1051,7 +1051,7 @@
         "InHigh": 1887.9,
         "PX": 872097.6927,
         "PY": 2768881.3981,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -1078,7 +1078,7 @@
         "InHigh": 1888.39,
         "PX": 872135.3385,
         "PY": 2768770.9528,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.06
       },
       "geometry": {
         "type": "Point",
@@ -1105,7 +1105,7 @@
         "InHigh": 1885.9,
         "PX": 871946.4683,
         "PY": 2769130.7559,
-        "AVG_DEPTH": 0.28
+        "AVG_DEPTH": 0.32
       },
       "geometry": {
         "type": "Point",
@@ -1132,7 +1132,7 @@
         "InHigh": 1885.45,
         "PX": 871819.1921,
         "PY": 2768864.7556,
-        "AVG_DEPTH": 1.76
+        "AVG_DEPTH": 1.92
       },
       "geometry": {
         "type": "Point",
@@ -1159,7 +1159,7 @@
         "InHigh": 1885.75,
         "PX": 871829.4459,
         "PY": 2768841.8211,
-        "AVG_DEPTH": 1.46
+        "AVG_DEPTH": 1.65
       },
       "geometry": {
         "type": "Point",
@@ -1186,7 +1186,7 @@
         "InHigh": 1886.0,
         "PX": 871873.2606,
         "PY": 2768865.4786,
-        "AVG_DEPTH": 1.22
+        "AVG_DEPTH": 1.41
       },
       "geometry": {
         "type": "Point",
@@ -1213,7 +1213,7 @@
         "InHigh": 1887.95,
         "PX": 871881.2619,
         "PY": 2768900.2248,
-        "AVG_DEPTH": 0.03
+        "AVG_DEPTH": 0.04
       },
       "geometry": {
         "type": "Point",
@@ -1240,7 +1240,7 @@
         "InHigh": 1887.93,
         "PX": 871979.2179,
         "PY": 2768968.793,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.03
       },
       "geometry": {
         "type": "Point",
@@ -1267,7 +1267,7 @@
         "InHigh": 1884.57,
         "PX": 872007.7778,
         "PY": 2769083.0369,
-        "AVG_DEPTH": 1.92
+        "AVG_DEPTH": 2.1
       },
       "geometry": {
         "type": "Point",
@@ -1294,7 +1294,7 @@
         "InHigh": 1884.88,
         "PX": 872079.9415,
         "PY": 2769014.9041,
-        "AVG_DEPTH": 1.84
+        "AVG_DEPTH": 2.05
       },
       "geometry": {
         "type": "Point",
@@ -1321,7 +1321,7 @@
         "InHigh": 1885.14,
         "PX": 872094.492,
         "PY": 2768879.6631,
-        "AVG_DEPTH": 1.88
+        "AVG_DEPTH": 2.06
       },
       "geometry": {
         "type": "Point",
@@ -1348,7 +1348,7 @@
         "InHigh": 1887.93,
         "PX": 872109.704,
         "PY": 2768933.1437,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -1375,7 +1375,7 @@
         "InHigh": 1888.3,
         "PX": 872151.1713,
         "PY": 2768793.5807,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -1402,7 +1402,7 @@
         "InHigh": 1885.92,
         "PX": 871996.9207,
         "PY": 2768986.6775,
-        "AVG_DEPTH": 1.24
+        "AVG_DEPTH": 1.37
       },
       "geometry": {
         "type": "Point",
@@ -1429,7 +1429,7 @@
         "InHigh": 1885.91,
         "PX": 872006.8828,
         "PY": 2768993.481,
-        "AVG_DEPTH": 1.24
+        "AVG_DEPTH": 1.36
       },
       "geometry": {
         "type": "Point",
@@ -1483,7 +1483,7 @@
         "InHigh": 1884.9,
         "PX": 872019.8701,
         "PY": 2769030.9172,
-        "AVG_DEPTH": 1.82
+        "AVG_DEPTH": 1.98
       },
       "geometry": {
         "type": "Point",
@@ -1510,7 +1510,7 @@
         "InHigh": 1885.9,
         "PX": 872025.6049,
         "PY": 2769114.4412,
-        "AVG_DEPTH": 1.24
+        "AVG_DEPTH": 1.49
       },
       "geometry": {
         "type": "Point",
@@ -1537,7 +1537,7 @@
         "InHigh": 1886.74,
         "PX": 872031.8682,
         "PY": 2769122.707,
-        "AVG_DEPTH": 0.63
+        "AVG_DEPTH": 0.83
       },
       "geometry": {
         "type": "Point",
@@ -1564,7 +1564,7 @@
         "InHigh": 1885.62,
         "PX": 872052.4362,
         "PY": 2769059.8332,
-        "AVG_DEPTH": 1.37
+        "AVG_DEPTH": 1.62
       },
       "geometry": {
         "type": "Point",
@@ -1591,7 +1591,7 @@
         "InHigh": 1887.87,
         "PX": 872082.046,
         "PY": 2768913.8869,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -1618,7 +1618,7 @@
         "InHigh": 1887.92,
         "PX": 872083.2584,
         "PY": 2768979.8155,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -1672,7 +1672,7 @@
         "InHigh": 1888.04,
         "PX": 872101.2507,
         "PY": 2768883.3048,
-        "AVG_DEPTH": 0.03
+        "AVG_DEPTH": 0.04
       },
       "geometry": {
         "type": "Point",
@@ -1699,7 +1699,7 @@
         "InHigh": 1884.65,
         "PX": 872109.7247,
         "PY": 2768852.2871,
-        "AVG_DEPTH": 2.37
+        "AVG_DEPTH": 2.56
       },
       "geometry": {
         "type": "Point",
@@ -1726,7 +1726,7 @@
         "InHigh": 1885.45,
         "PX": 872114.227,
         "PY": 2768935.5632,
-        "AVG_DEPTH": 1.32
+        "AVG_DEPTH": 1.54
       },
       "geometry": {
         "type": "Point",
@@ -1753,7 +1753,7 @@
         "InHigh": 1888.15,
         "PX": 872129.5991,
         "PY": 2768832.3629,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -1780,7 +1780,7 @@
         "InHigh": 1884.98,
         "PX": 872144.1856,
         "PY": 2768789.6342,
-        "AVG_DEPTH": 2.09
+        "AVG_DEPTH": 2.29
       },
       "geometry": {
         "type": "Point",
@@ -1807,7 +1807,7 @@
         "InHigh": 1884.95,
         "PX": 872147.2151,
         "PY": 2768875.5346,
-        "AVG_DEPTH": 1.82
+        "AVG_DEPTH": 2.06
       },
       "geometry": {
         "type": "Point",
@@ -1834,7 +1834,7 @@
         "InHigh": 1885.57,
         "PX": 872149.5932,
         "PY": 2768866.5197,
-        "AVG_DEPTH": 1.24
+        "AVG_DEPTH": 1.47
       },
       "geometry": {
         "type": "Point",
@@ -1888,7 +1888,7 @@
         "InHigh": 1884.45,
         "PX": 871964.6297,
         "PY": 2769124.679,
-        "AVG_DEPTH": 1.86
+        "AVG_DEPTH": 2.0
       },
       "geometry": {
         "type": "Point",
@@ -1915,7 +1915,7 @@
         "InHigh": 1888.6,
         "PX": 871996.432,
         "PY": 2769150.0791,
-        "AVG_DEPTH": 0.02
+        "AVG_DEPTH": 0.04
       },
       "geometry": {
         "type": "Point",
@@ -1969,7 +1969,7 @@
         "InHigh": 1888.17,
         "PX": 871963.4019,
         "PY": 2769123.7273,
-        "AVG_DEPTH": 0.01
+        "AVG_DEPTH": 0.02
       },
       "geometry": {
         "type": "Point",
@@ -2023,7 +2023,7 @@
         "InHigh": 1888.14,
         "PX": 872016.48,
         "PY": 2769110.1389,
-        "AVG_DEPTH": 0.01
+        "AVG_DEPTH": 0.02
       },
       "geometry": {
         "type": "Point",
@@ -2050,7 +2050,7 @@
         "InHigh": 1885.3,
         "PX": 872051.2928,
         "PY": 2769006.2275,
-        "AVG_DEPTH": 1.35
+        "AVG_DEPTH": 1.54
       },
       "geometry": {
         "type": "Point",
@@ -2077,7 +2077,7 @@
         "InHigh": 1888.35,
         "PX": 872188.403,
         "PY": 2768799.9769,
-        "AVG_DEPTH": 0.1
+        "AVG_DEPTH": 0.11
       },
       "geometry": {
         "type": "Point",
@@ -2131,7 +2131,7 @@
         "InHigh": 1887.89,
         "PX": 871821.5591,
         "PY": 2768860.6699,
-        "AVG_DEPTH": 0.03
+        "AVG_DEPTH": 0.04
       },
       "geometry": {
         "type": "Point",
@@ -2158,7 +2158,7 @@
         "InHigh": 1885.52,
         "PX": 871849.1184,
         "PY": 2768884.6655,
-        "AVG_DEPTH": 1.69
+        "AVG_DEPTH": 1.85
       },
       "geometry": {
         "type": "Point",
@@ -2185,7 +2185,7 @@
         "InHigh": 1885.99,
         "PX": 871893.3499,
         "PY": 2768885.4389,
-        "AVG_DEPTH": 1.22
+        "AVG_DEPTH": 1.41
       },
       "geometry": {
         "type": "Point",
@@ -2212,7 +2212,7 @@
         "InHigh": 1885.92,
         "PX": 871976.1757,
         "PY": 2768972.7243,
-        "AVG_DEPTH": 1.28
+        "AVG_DEPTH": 1.42
       },
       "geometry": {
         "type": "Point",
@@ -2239,7 +2239,7 @@
         "InHigh": 1884.24,
         "PX": 872001.5188,
         "PY": 2769062.8245,
-        "AVG_DEPTH": 2.34
+        "AVG_DEPTH": 2.5
       },
       "geometry": {
         "type": "Point",
@@ -2293,7 +2293,7 @@
         "InHigh": 1886.46,
         "PX": 872024.3239,
         "PY": 2769119.6763,
-        "AVG_DEPTH": 0.78
+        "AVG_DEPTH": 1.01
       },
       "geometry": {
         "type": "Point",
@@ -2320,7 +2320,7 @@
         "InHigh": 1885.77,
         "PX": 872029.5412,
         "PY": 2769097.6574,
-        "AVG_DEPTH": 1.33
+        "AVG_DEPTH": 1.58
       },
       "geometry": {
         "type": "Point",
@@ -2347,7 +2347,7 @@
         "InHigh": 1885.08,
         "PX": 872042.5618,
         "PY": 2769020.8185,
-        "AVG_DEPTH": 1.52
+        "AVG_DEPTH": 1.72
       },
       "geometry": {
         "type": "Point",
@@ -2374,7 +2374,7 @@
         "InHigh": 1885.62,
         "PX": 872066.5056,
         "PY": 2769036.3745,
-        "AVG_DEPTH": 1.29
+        "AVG_DEPTH": 1.51
       },
       "geometry": {
         "type": "Point",
@@ -2401,7 +2401,7 @@
         "InHigh": 1884.41,
         "PX": 872077.1193,
         "PY": 2768909.6794,
-        "AVG_DEPTH": 2.52
+        "AVG_DEPTH": 2.7
       },
       "geometry": {
         "type": "Point",
@@ -2428,7 +2428,7 @@
         "InHigh": 1885.41,
         "PX": 872122.9162,
         "PY": 2768828.3566,
-        "AVG_DEPTH": 1.67
+        "AVG_DEPTH": 1.86
       },
       "geometry": {
         "type": "Point",
@@ -2455,7 +2455,7 @@
         "InHigh": 1888.51,
         "PX": 872129.019,
         "PY": 2768790.7504,
-        "AVG_DEPTH": 0.07
+        "AVG_DEPTH": 0.1
       },
       "geometry": {
         "type": "Point",
@@ -2509,7 +2509,7 @@
         "InHigh": 1885.81,
         "PX": 872195.0693,
         "PY": 2768790.3899,
-        "AVG_DEPTH": 1.05
+        "AVG_DEPTH": 1.28
       },
       "geometry": {
         "type": "Point",
@@ -2536,7 +2536,7 @@
         "InHigh": 1887.22,
         "PX": 871991.5772,
         "PY": 2769175.9377,
-        "AVG_DEPTH": 0.45
+        "AVG_DEPTH": 0.59
       },
       "geometry": {
         "type": "Point",
@@ -2617,7 +2617,7 @@
         "InHigh": 1886.94,
         "PX": 872005.8835,
         "PY": 2769138.0507,
-        "AVG_DEPTH": 0.48
+        "AVG_DEPTH": 0.67
       },
       "geometry": {
         "type": "Point",
@@ -2644,7 +2644,7 @@
         "InHigh": 1886.08,
         "PX": 871844.2253,
         "PY": 2768853.0088,
-        "AVG_DEPTH": 1.15
+        "AVG_DEPTH": 1.33
       },
       "geometry": {
         "type": "Point",
@@ -2671,7 +2671,7 @@
         "InHigh": 1885.52,
         "PX": 871878.4826,
         "PY": 2768903.924,
-        "AVG_DEPTH": 1.7
+        "AVG_DEPTH": 1.87
       },
       "geometry": {
         "type": "Point",
@@ -2698,7 +2698,7 @@
         "InHigh": 1885.98,
         "PX": 871918.756,
         "PY": 2768903.399,
-        "AVG_DEPTH": 1.23
+        "AVG_DEPTH": 1.41
       },
       "geometry": {
         "type": "Point",
@@ -2725,7 +2725,7 @@
         "InHigh": 1885.73,
         "PX": 871936.6485,
         "PY": 2768942.8893,
-        "AVG_DEPTH": 1.49
+        "AVG_DEPTH": 1.65
       },
       "geometry": {
         "type": "Point",
@@ -2779,7 +2779,7 @@
         "InHigh": 1885.51,
         "PX": 871944.7206,
         "PY": 2768920.0347,
-        "AVG_DEPTH": 1.64
+        "AVG_DEPTH": 1.83
       },
       "geometry": {
         "type": "Point",
@@ -2806,7 +2806,7 @@
         "InHigh": 1885.07,
         "PX": 872027.4475,
         "PY": 2769048.6029,
-        "AVG_DEPTH": 1.49
+        "AVG_DEPTH": 1.68
       },
       "geometry": {
         "type": "Point",
@@ -2833,7 +2833,7 @@
         "InHigh": 1884.42,
         "PX": 872034.8976,
         "PY": 2769005.0853,
-        "AVG_DEPTH": 2.31
+        "AVG_DEPTH": 2.49
       },
       "geometry": {
         "type": "Point",
@@ -2860,7 +2860,7 @@
         "InHigh": 1884.99,
         "PX": 872042.4984,
         "PY": 2768971.2349,
-        "AVG_DEPTH": 1.92
+        "AVG_DEPTH": 2.07
       },
       "geometry": {
         "type": "Point",
@@ -2968,7 +2968,7 @@
         "InHigh": 1888.51,
         "PX": 872123.0375,
         "PY": 2768801.2559,
-        "AVG_DEPTH": 0.14
+        "AVG_DEPTH": 0.2
       },
       "geometry": {
         "type": "Point",
@@ -3022,7 +3022,7 @@
         "InHigh": 1886.91,
         "PX": 872132.4458,
         "PY": 2768783.3898,
-        "AVG_DEPTH": 1.1
+        "AVG_DEPTH": 1.21
       },
       "geometry": {
         "type": "Point",
@@ -3049,7 +3049,7 @@
         "InHigh": 1887.99,
         "PX": 872131.3675,
         "PY": 2768902.3322,
-        "AVG_DEPTH": 0.04
+        "AVG_DEPTH": 0.05
       },
       "geometry": {
         "type": "Point",
@@ -3076,7 +3076,7 @@
         "InHigh": 1888.14,
         "PX": 872147.1832,
         "PY": 2768865.051,
-        "AVG_DEPTH": 0.01
+        "AVG_DEPTH": 0.02
       },
       "geometry": {
         "type": "Point",
@@ -3103,7 +3103,7 @@
         "InHigh": 1885.58,
         "PX": 872151.5638,
         "PY": 2768776.5437,
-        "AVG_DEPTH": 1.54
+        "AVG_DEPTH": 1.72
       },
       "geometry": {
         "type": "Point",

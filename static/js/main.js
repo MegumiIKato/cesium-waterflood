@@ -1,6 +1,8 @@
 import { rain, stopRain } from '/static/js/raineffect.js';
 import { initDrawTools, startDrawRectangle, stopDrawRectangle } from '/static/js/drawtools.js';
 import { initModelAdjuster } from '/static/js/modeladjuster.js';
+import { loadGeoJSONData, initNodeStatusDisplay } from '/static/js/geojsonLoad.js';
+
 // 等待DOM加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
 
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 天地图密钥
     const tdtToken = '95478fb1c6e5ac392e34aa9389a83b81';
-    
+
     // 创建天地图影像底图
     const tdtImgProvider = new Cesium.WebMapTileServiceImageryProvider({
         url: `http://t0.tianditu.gov.cn/img_w/wmts?tk=${tdtToken}`,
@@ -43,16 +45,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             requestVertexNormals: true,//请求地形的顶点法线，这对于渲染光照和阴影效果非常重要
           }), // 使用全球地形
         animation: false, // 隐藏动画控件
-        baseLayerPicker: false, // 隐藏图层选择器，因为我们使用自定义底图
-        fullscreenButton: false, // 显示全屏按钮
+        baseLayerPicker: false, // 隐藏图层选择器
+        fullscreenButton: false, // 隐藏全屏按钮
         vrButton: false, // 隐藏VR按钮
         geocoder: true, // 显示地理编码器
-        homeButton: false, // 显示Home按钮
-        infoBox: false, // 显示信息框
+        homeButton: false, // 隐藏Home按钮
+        infoBox: false, // 隐藏信息框
         sceneModePicker: true, // 显示场景模式选择器
         selectionIndicator: false, // 隐藏选择指示器，避免与拖拽冲突
         timeline: false, // 隐藏时间线
-        navigationHelpButton: false, // 显示导航帮助按钮
+        navigationHelpButton: false, // 隐藏导航帮助按钮
         scene3DOnly: false, // 允许2D和3D模式切换
         shouldAnimate: true, // 启用动画
         shadows: false, // 禁用阴影
@@ -70,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     viewer._cesiumWidget._creditContainer.style.display = "none";
     
     // 添加天地图影像注记图层
-    viewer.imageryLayers.addImageryProvider(tdtImgMarkProvider);
+    // viewer.imageryLayers.addImageryProvider(tdtImgMarkProvider);
     
     // 禁用深度测试，使大气效果更明显
     viewer.scene.globe.depthTestAgainstTerrain = false;
@@ -124,14 +126,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 启用视锥体裁剪 - 仅加载摄像机视野内的瓦片
     viewer.scene.globe.cullWithChildrenBounds = true;
-    viewer.scene.globe.maximumScreenSpaceError = 16; // 降低地球的屏幕空间误差以提高性能
     
     // 设置瓦片加载优化选项
     guangFuRoadTileset.cullRequestsWhileMoving = true; // 移动时暂停瓦片请求
     guangFuRoadTileset.cullRequestsWhileMovingMultiplier = 10; // 移动时的裁剪乘数
     guangFuRoadTileset.foveatedScreenSpaceError = true; // 启用中心区域优先加载
     guangFuRoadTileset.foveatedConeSize = 0.3; // 中心区域大小
-    guangFuRoadTileset.maximumScreenSpaceError = 16; // 降低最大屏幕空间误差以提高性能
     
     // 定期监控内存使用情况
     setInterval(function() {
@@ -204,190 +204,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     // 加载GeoJSON数据
-    fetch('/static/geojson/point_with_depth.geojson')
-    .then(response => response.json())
-    .then(data => {
-        // 定义EPSG:32647坐标系统（UTM Zone 47N）
-        proj4.defs("EPSG:32647", "+proj=utm +zone=47 +datum=WGS84 +units=m +no_defs");
-
-        // 移除CRS定义
-        delete data.crs;
-        
-        // 定义深度分级颜色
-        const depthColorMap = {
-            "低于1米": Cesium.Color.GREEN.withAlpha(0.7),
-            "1-2米": Cesium.Color.BLUE.withAlpha(0.7),
-            "大于2米": Cesium.Color.RED.withAlpha(0.7)
-        };
-        
-        // 定义统一点尺寸
-        const pointSize = 10;
-        
-        // 默认蓝色
-        const defaultColor = Cesium.Color.BLUE.withAlpha(0.7);
-        
-        // 存储所有点实体的数组，以便后续更新
-        const pointEntities = [];
-
-        // 为每个点创建实体
-        data.features.forEach(feature => {
-            if (feature.geometry && feature.geometry.coordinates) {
-                // 从EPSG:32647转换到WGS84
-                const [x, y] = feature.geometry.coordinates;
-                const [lon, lat] = proj4('EPSG:32647', 'EPSG:4326', [x, y]);
-                const height = feature.properties.HIGH || 0; // 使用属性中的高度值
-                
-                // 创建点实体（初始统一蓝色）
-                const entity = viewer.entities.add({
-                    position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
-                    point: {
-                        pixelSize: pointSize,
-                        color: defaultColor,
-                        outlineColor: Cesium.Color.WHITE,
-                        outlineWidth: 2,
-                        heightReference: Cesium.HeightReference.CLAMP_TO_3D_MODEL, // 紧贴3D模型
-                        disableDepthTestDistance: Number.POSITIVE_INFINITY // 禁用深度测试
-                    },
-                    properties: feature.properties // 保存属性信息
-                });
-                
-                // 将实体和深度信息存储在数组中
-                pointEntities.push({
-                    entity: entity,
-                    depth: feature.properties.AVG_DEPTH || 0
-                });
-            }
+    loadGeoJSONData(viewer,'/static/geojson/point.geojson')
+        .then(() => {
+            // 初始化节点积水情况显示功能
+            initNodeStatusDisplay(viewer);
+        })
+        .catch(error => {
+            console.error('加载GeoJSON数据失败:', error);
         });
-        
-        // 添加节点积水情况按钮事件监听
-        const nodeStatusBtn = document.getElementById('NodeStatus');
-        // 初始化按钮状态
-        nodeStatusBtn.setAttribute('data-status', 'inactive');
-        
-        nodeStatusBtn.addEventListener('click', function() {
-            // 保存当前渲染模式设置
-            const currentRenderMode = viewer.scene.requestRenderMode;
-            
-            if (nodeStatusBtn.getAttribute('data-status') === 'inactive') {
-                // 激活分级显示
-                pointEntities.forEach(item => {
-                    // 根据深度确定颜色
-                    let pointColor;
-                    if (item.depth < 1) {
-                        pointColor = depthColorMap["低于1米"];
-                    } else if (item.depth >= 1 && item.depth <= 2) {
-                        pointColor = depthColorMap["1-2米"];
-                    } else {
-                        pointColor = depthColorMap["大于2米"];
-                    }
-                    
-                    // 更新点颜色
-                    item.entity.point.color = pointColor;
-                });
-                
-                // 创建分级图例
-                createLegend(depthColorMap);
-                
-                // 更新按钮状态
-                nodeStatusBtn.setAttribute('data-status', 'active');
-                nodeStatusBtn.textContent = '恢复默认显示';
-            } else {
-                // 恢复统一蓝色
-                pointEntities.forEach(item => {
-                    item.entity.point.color = defaultColor;
-                });
-                
-                // 移除图例
-                let legend = document.getElementById('pointLegend');
-                if (legend) {
-                    legend.remove();
-                }
-                
-                // 更新按钮状态
-                nodeStatusBtn.setAttribute('data-status', 'inactive');
-                nodeStatusBtn.textContent = '节点积水情况';
-            }
-            
-            // 保持渲染设置与原来一致 - 如果雨效果正在运行，保持持续渲染
-            viewer.scene.requestRenderMode = currentRenderMode;
-            
-            // 无论如何，强制重新渲染一次场景
-            viewer.scene.requestRender();
-        });
-        
-        // 自动定位到数据范围
-        // viewer.zoomTo(viewer.entities);
-    })
-    .catch(error => {
-        console.error('加载GeoJSON数据失败:', error);
-    });
-    
-    // 创建颜色图例函数
-    function createLegend(colorMap) {
-        // 检查是否已存在图例
-        let legend = document.getElementById('pointLegend');
-        if (legend) {
-            legend.remove();
-        }
-        
-        // 创建图例容器
-        legend = document.createElement('div');
-        legend.id = 'pointLegend';
-        legend.style.position = 'absolute';
-        legend.style.bottom = '80px';
-        legend.style.left = '20px';
-        legend.style.backgroundColor = 'rgba(40, 40, 40, 0.8)';
-        legend.style.color = 'white';
-        legend.style.padding = '20px';
-        legend.style.borderRadius = '10px';
-        legend.style.fontFamily = 'Arial, sans-serif';
-        legend.style.fontSize = '18px';
-        legend.style.zIndex = '1000';
-        legend.style.minWidth = '180px';
-        legend.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.5)';
-        
-        // 创建图例标题
-        const title = document.createElement('div');
-        title.textContent = '积水深度';
-        title.style.fontWeight = 'bold';
-        title.style.marginBottom = '15px';
-        title.style.borderBottom = '2px solid white';
-        title.style.paddingBottom = '10px';
-        title.style.fontSize = '22px';
-        title.style.textAlign = 'center';
-        legend.appendChild(title);
-        
-        // 显示深度分级图例
-        Object.keys(colorMap).forEach(levelName => {
-            const item = document.createElement('div');
-            item.style.marginTop = '12px';
-            item.style.display = 'flex';
-            item.style.alignItems = 'center';
-            item.style.marginBottom = '12px';
-            
-            const colorBox = document.createElement('span');
-            colorBox.style.display = 'inline-block';
-            colorBox.style.width = '24px';
-            colorBox.style.height = '24px';
-            colorBox.style.marginRight = '15px';
-            colorBox.style.border = '2px solid white';
-            
-            // 将Cesium颜色转换为CSS颜色
-            const color = colorMap[levelName];
-            const cssColor = `rgba(${Math.floor(color.red * 255)}, ${Math.floor(color.green * 255)}, ${Math.floor(color.blue * 255)}, ${color.alpha})`;
-            colorBox.style.backgroundColor = cssColor;
-            
-            item.appendChild(colorBox);
-            item.appendChild(document.createTextNode(levelName));
-            legend.appendChild(item);
-        });
-        
-        // 添加到文档
-        document.body.appendChild(legend);
-    }
     
     initMousePositionPanel(); // 初始化鼠标位置信息面板
-
 
     // 添加降雨按钮事件监听
     const rainControlBtn = document.getElementById('RainControl');
@@ -518,6 +344,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     //         drawRectangleBtn.textContent = '开始绘制';
     //     }
     // });
+
     console.log('Cesium初始化完成');
 
     // 添加SWMM模拟按钮事件监听
@@ -542,41 +369,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // 获取按钮引用
     const loadResultBtn = document.getElementById('LoadResult');
-    const nodeStatusBtn = document.getElementById('NodeStatus');
-    
-    // 添加加载模拟结果按钮事件监听
-    if (loadResultBtn) {
-        loadResultBtn.addEventListener('click', function() {
-            // 显示加载中状态
-            loadResultBtn.disabled = true;
-            loadResultBtn.textContent = '正在加载数据...';
-            
-            // 直接调用加载模拟结果接口，让后端自动获取最新的RPT文件
-            fetch('/load_simulation_result', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})  // 空对象，不传递文件名
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('成功加载模拟结果：' + data.message);
-                    // 更新页面，重新加载GeoJSON数据
-                    location.reload();
-                } else {
-                    alert('加载模拟结果失败: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('加载模拟结果出错:', error);
-                alert('加载模拟结果出错: ' + error.message);
-            })
-            .finally(() => {
-                loadResultBtn.disabled = false;
-                loadResultBtn.textContent = '加载模拟结果';
-            });
+    loadResultBtn.addEventListener('click', function() {
+        loadResultBtn.textContent = '正在加载数据...';
+        loadGeoJSONData(viewer, '/static/geojson/point_with_depth.geojson')
+        .then(() => {
+            alert('加载模拟结果成功');
+            loadResultBtn.textContent = '加载模拟结果';
+        })
+        .catch(error => {
+            console.error('加载GeoJSON数据失败:', error);
         });
-    }
+    });
+
 });
