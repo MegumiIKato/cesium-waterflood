@@ -781,7 +781,8 @@
         "InHigh": 1886.97,
         "PX": 871997.4276,
         "PY": 2769152.7815,
-        "AVG_DEPTH": 0.75
+        "AVG_DEPTH": 0.75,
+        "FLOOD_VOLUME": 0.001
       },
       "geometry": {
         "type": "Point",
@@ -808,7 +809,8 @@
         "InHigh": 1885.67,
         "PX": 871870.0857,
         "PY": 2768870.7294,
-        "AVG_DEPTH": 1.72
+        "AVG_DEPTH": 1.72,
+        "FLOOD_VOLUME": 0.217
       },
       "geometry": {
         "type": "Point",
@@ -970,7 +972,8 @@
         "InHigh": 1884.58,
         "PX": 872059.7253,
         "PY": 2768940.2449,
-        "AVG_DEPTH": 2.49
+        "AVG_DEPTH": 2.49,
+        "FLOOD_VOLUME": 0.112
       },
       "geometry": {
         "type": "Point",
@@ -1294,7 +1297,8 @@
         "InHigh": 1884.88,
         "PX": 872079.9415,
         "PY": 2769014.9041,
-        "AVG_DEPTH": 2.05
+        "AVG_DEPTH": 2.05,
+        "FLOOD_VOLUME": 0.982
       },
       "geometry": {
         "type": "Point",
@@ -1321,7 +1325,8 @@
         "InHigh": 1885.14,
         "PX": 872094.492,
         "PY": 2768879.6631,
-        "AVG_DEPTH": 2.06
+        "AVG_DEPTH": 2.06,
+        "FLOOD_VOLUME": 0.055
       },
       "geometry": {
         "type": "Point",
@@ -1537,7 +1542,8 @@
         "InHigh": 1886.74,
         "PX": 872031.8682,
         "PY": 2769122.707,
-        "AVG_DEPTH": 0.83
+        "AVG_DEPTH": 0.83,
+        "FLOOD_VOLUME": 0.256
       },
       "geometry": {
         "type": "Point",
@@ -1726,7 +1732,8 @@
         "InHigh": 1885.45,
         "PX": 872114.227,
         "PY": 2768935.5632,
-        "AVG_DEPTH": 1.54
+        "AVG_DEPTH": 1.54,
+        "FLOOD_VOLUME": 0.111
       },
       "geometry": {
         "type": "Point",
@@ -1807,7 +1814,8 @@
         "InHigh": 1884.95,
         "PX": 872147.2151,
         "PY": 2768875.5346,
-        "AVG_DEPTH": 2.06
+        "AVG_DEPTH": 2.06,
+        "FLOOD_VOLUME": 0.096
       },
       "geometry": {
         "type": "Point",
@@ -2158,7 +2166,8 @@
         "InHigh": 1885.52,
         "PX": 871849.1184,
         "PY": 2768884.6655,
-        "AVG_DEPTH": 1.85
+        "AVG_DEPTH": 1.85,
+        "FLOOD_VOLUME": 0.564
       },
       "geometry": {
         "type": "Point",
@@ -2293,7 +2302,8 @@
         "InHigh": 1886.46,
         "PX": 872024.3239,
         "PY": 2769119.6763,
-        "AVG_DEPTH": 1.01
+        "AVG_DEPTH": 1.01,
+        "FLOOD_VOLUME": 0.171
       },
       "geometry": {
         "type": "Point",
@@ -2374,7 +2384,8 @@
         "InHigh": 1885.62,
         "PX": 872066.5056,
         "PY": 2769036.3745,
-        "AVG_DEPTH": 1.51
+        "AVG_DEPTH": 1.51,
+        "FLOOD_VOLUME": 0.073
       },
       "geometry": {
         "type": "Point",
@@ -2401,7 +2412,8 @@
         "InHigh": 1884.41,
         "PX": 872077.1193,
         "PY": 2768909.6794,
-        "AVG_DEPTH": 2.7
+        "AVG_DEPTH": 2.7,
+        "FLOOD_VOLUME": 0.083
       },
       "geometry": {
         "type": "Point",
@@ -2725,7 +2737,8 @@
         "InHigh": 1885.73,
         "PX": 871936.6485,
         "PY": 2768942.8893,
-        "AVG_DEPTH": 1.65
+        "AVG_DEPTH": 1.65,
+        "FLOOD_VOLUME": 0.088
       },
       "geometry": {
         "type": "Point",
@@ -2860,7 +2873,8 @@
         "InHigh": 1884.99,
         "PX": 872042.4984,
         "PY": 2768971.2349,
-        "AVG_DEPTH": 2.07
+        "AVG_DEPTH": 2.07,
+        "FLOOD_VOLUME": 1.945
       },
       "geometry": {
         "type": "Point",
@@ -3022,7 +3036,8 @@
         "InHigh": 1886.91,
         "PX": 872132.4458,
         "PY": 2768783.3898,
-        "AVG_DEPTH": 1.21
+        "AVG_DEPTH": 1.21,
+        "FLOOD_VOLUME": 0.114
       },
       "geometry": {
         "type": "Point",

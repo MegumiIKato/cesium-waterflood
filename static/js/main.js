@@ -1,7 +1,7 @@
 import { rain, stopRain } from '/static/js/raineffect.js';
 import { initDrawTools, startDrawRectangle, stopDrawRectangle } from '/static/js/drawtools.js';
 import { initModelAdjuster } from '/static/js/modeladjuster.js';
-import { loadGeoJSONData, initNodeStatusDisplay } from '/static/js/geojsonLoad.js';
+import { loadGeoJSONData, initNodeStatusDisplay, initNodeOverflowDisplay } from '/static/js/geojsonLoad.js';
 
 // 等待DOM加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
@@ -205,10 +205,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // 加载GeoJSON数据
     loadGeoJSONData(viewer,'/static/geojson/point.geojson')
-        .then(() => {
+        .then(
             // 初始化节点积水情况显示功能
-            initNodeStatusDisplay(viewer);
-        })
+            initNodeStatusDisplay(viewer),
+            // 初始化节点溢流情况显示功能
+            initNodeOverflowDisplay(viewer)
+        )
         .catch(error => {
             console.error('加载GeoJSON数据失败:', error);
         });
@@ -371,7 +373,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const loadResultBtn = document.getElementById('LoadResult');
     loadResultBtn.addEventListener('click', function() {
         loadResultBtn.textContent = '正在加载数据...';
-        loadGeoJSONData(viewer, '/static/geojson/point_with_depth.geojson')
+        loadGeoJSONData(viewer, '/static/geojson/point_new.geojson')
         .then(() => {
             alert('加载模拟结果成功');
             loadResultBtn.textContent = '加载模拟结果';

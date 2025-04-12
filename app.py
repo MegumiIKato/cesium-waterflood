@@ -100,7 +100,7 @@ def run_swmm():
             
             # 指定GeoJSON文件路径
             geojson_file_path = os.path.join("static", "geojson", "point.geojson")
-            output_file_path = os.path.join("static", "geojson", "point_with_depth.geojson")
+            output_file_path = os.path.join("static", "geojson", "point_new.geojson")
             
             # 检查源文件是否存在
             if not os.path.exists(geojson_file_path):

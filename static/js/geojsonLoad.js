@@ -11,8 +11,40 @@ const pointSize = 10;
 // 默认蓝色
 const defaultColor = Cesium.Color.BLUE.withAlpha(0.7);
 
+// 缓冲区颜色
+const bufferColor = Cesium.Color.LIGHTBLUE.withAlpha(0.3);
+
 // 存储所有点实体的数组，以便后续更新
 let pointEntities = [];
+
+// 创建点缓冲区
+export function createPointBuffer(viewer, pointEntities) {
+    // 清除现有的缓冲区
+    pointEntities.forEach(item => {
+        if (item.bufferEntity) {
+            viewer.entities.remove(item.bufferEntity);
+        }
+    });
+
+    // 为每个点创建缓冲区
+    pointEntities.forEach(item => {
+        const position = item.entity.position.getValue();
+        const bufferEntity = viewer.entities.add({
+            position: position,
+            ellipse: {
+                semiMajorAxis: 10.0, // 1米半径
+                semiMinorAxis: 10.0, // 1米半径
+                material: bufferColor,
+                outline: true,
+                outlineColor: Cesium.Color.LIGHTBLUE,
+                outlineWidth: 1,
+                heightReference: Cesium.HeightReference.CLAMP_TO_3D_MODEL,
+                disableDepthTestDistance: Number.POSITIVE_INFINITY
+            }
+        });
+        item.bufferEntity = bufferEntity;
+    });
+}
 
 // 加载GeoJSON数据
 export function loadGeoJSONData(viewer, url) {
@@ -186,5 +218,51 @@ export function initNodeStatusDisplay(viewer) {
 
         // 强制重新渲染一次场景
         viewer.scene.requestRender();
+    });
+}
+
+// 初始化节点溢流情况显示功能
+export function initNodeOverflowDisplay(viewer) {
+    const nodeOverflowBtn = document.getElementById('NodeOverflow');
+    if (!nodeOverflowBtn) return;
+
+    // 初始化按钮状态
+    nodeOverflowBtn.setAttribute('data-status', 'inactive');
+
+    nodeOverflowBtn.addEventListener('click', function() {
+        if (nodeOverflowBtn.getAttribute('data-status') === 'inactive') {
+            // 创建缓冲区
+            createPointBuffer(viewer, pointEntities);
+            
+            // 更新按钮状态
+            nodeOverflowBtn.setAttribute('data-status', 'active');
+            nodeOverflowBtn.textContent = '隐藏溢流区域';
+
+            // 强制刷新场景
+            viewer.scene.requestRenderMode = false;
+            viewer.scene.requestRender();
+            setTimeout(() => {
+                viewer.scene.requestRenderMode = true;
+            }, 100);
+        } else {
+            // 清除缓冲区
+            pointEntities.forEach(item => {
+                if (item.bufferEntity) {
+                    viewer.entities.remove(item.bufferEntity);
+                    item.bufferEntity = null;
+                }
+            });
+            
+            // 更新按钮状态
+            nodeOverflowBtn.setAttribute('data-status', 'inactive');
+            nodeOverflowBtn.textContent = '节点溢流情况';
+
+            // 强制刷新场景
+            viewer.scene.requestRenderMode = false;
+            viewer.scene.requestRender();
+            setTimeout(() => {
+                viewer.scene.requestRenderMode = true;
+            }, 100);
+        }
     });
 } 
