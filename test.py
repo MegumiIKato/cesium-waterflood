@@ -30,7 +30,7 @@ def update_geojson_with_depth_data(geojson_file_path, node_data, output_file_pat
     import json
     # 解包数据并创建查询字典
     node_depth_data, node_flood_data = node_data
-    node_depth_dict = {node_id: average_depth for node_id, _, average_depth in node_depth_data}
+    node_depth_dict = {node_id: max_depth for node_id, _, max_depth in node_depth_data}
     node_flood_dict = {node_id: flood_volume for node_id, flood_volume in node_flood_data}
     # 读取并更新GeoJSON数据
     with open(geojson_file_path, 'r', encoding='utf-8') as file:
@@ -39,7 +39,7 @@ def update_geojson_with_depth_data(geojson_file_path, node_data, output_file_pat
     for feature in geojson_data['features']:
         exp_no = feature['properties'].get('EXP_NO')
         if exp_no in node_depth_dict:
-            feature['properties']['AVG_DEPTH'] = node_depth_dict[exp_no]
+            feature['properties']['MAX_DEPTH'] = node_depth_dict[exp_no]
         if exp_no in node_flood_dict:
             feature['properties']['FLOOD_VOLUME'] = node_flood_dict[exp_no]
     # 保存更新后的数据
