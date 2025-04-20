@@ -1,8 +1,8 @@
 // 定义深度分级颜色
 const depthColorMap = {
-    "低于1米": Cesium.Color.GREEN.withAlpha(0.7),
-    "1-2米": Cesium.Color.BLUE.withAlpha(0.7),
-    "大于2米": Cesium.Color.RED.withAlpha(0.7)
+    "大于0.5米": Cesium.Color.GREEN.withAlpha(0.7),
+    "0.5-0米": Cesium.Color.YELLOW.withAlpha(0.7),
+    "已溢出": Cesium.Color.RED.withAlpha(0.7)
 };
 
 // 定义统一点尺寸
@@ -263,13 +263,10 @@ export function createPointBuffer(viewer, pointEntities) {
         if (properties.FLOOD_VOLUME !== undefined && properties.FLOOD_VOLUME !== null) {
             // 计算缓冲区半径
             const floodVolume = properties.FLOOD_VOLUME * 1000000; // 升，乘以10^6
-            const avgDepth = properties.AVG_DEPTH; // 米
+            const avgDepth = properties.MAX_DEPTH; // 米
             const volumeM3 = floodVolume / 1000; // 转换为立方米
             const area = volumeM3 / avgDepth; // 计算面积
             const radius = Math.sqrt(area / Math.PI); // 计算半径
-
-            // 打印调试信息
-            console.log(`点名: ${properties.EXP_NO}, FLOOD_VOLUME: ${floodVolume}升, 平均深度: ${avgDepth.toFixed(2)}米, 缓冲区半径: ${radius.toFixed(2)}米`);
 
             const bufferEntity = viewer.entities.add({
                 position: position,
@@ -376,7 +373,7 @@ export function createLegend(colorMap) {
 
     // 创建图例标题
     const title = document.createElement('div');
-    title.textContent = '积水深度';
+    title.textContent = '积水距井口距离';
     title.style.fontWeight = 'bold';
     title.style.marginBottom = '15px';
     title.style.borderBottom = '2px solid white';
@@ -429,14 +426,15 @@ export function initNodeStatusDisplay(viewer) {
         if (nodeStatusBtn.getAttribute('data-status') === 'inactive') {
             // 激活分级显示
             pointEntities.forEach(item => {
+                const outDepth = item.entity.properties.getValue().OUT_DEPTH;
                 // 根据深度确定颜色
                 let pointColor;
-                if (item.depth < 1) {
-                    pointColor = depthColorMap["低于1米"];
-                } else if (item.depth >= 1 && item.depth <= 2) {
-                    pointColor = depthColorMap["1-2米"];
+                if (outDepth < -0.5) {
+                    pointColor = depthColorMap["大于0.5米"];
+                } else if (outDepth >= -0.5 && outDepth < 0) {
+                    pointColor = depthColorMap["0.5-0米"];
                 } else {
-                    pointColor = depthColorMap["大于2米"];
+                    pointColor = depthColorMap["已溢出"];
                 }
 
                 // 更新点颜色
@@ -463,7 +461,7 @@ export function initNodeStatusDisplay(viewer) {
 
             // 更新按钮状态
             nodeStatusBtn.setAttribute('data-status', 'inactive');
-            nodeStatusBtn.textContent = '节点积水情况';
+            nodeStatusBtn.textContent = '节点情况';
         }
 
         // 保持渲染设置与原来一致
@@ -489,7 +487,7 @@ export function initNodeOverflowDisplay(viewer) {
             
             // 更新按钮状态
             nodeOverflowBtn.setAttribute('data-status', 'active');
-            nodeOverflowBtn.textContent = '隐藏溢流区域';
+            nodeOverflowBtn.textContent = '隐藏溢流范围';
 
             // 强制刷新场景
             viewer.scene.requestRenderMode = false;
@@ -508,7 +506,7 @@ export function initNodeOverflowDisplay(viewer) {
             
             // 更新按钮状态
             nodeOverflowBtn.setAttribute('data-status', 'inactive');
-            nodeOverflowBtn.textContent = '节点溢流情况';
+            nodeOverflowBtn.textContent = '溢流范围';
 
             // 强制刷新场景
             viewer.scene.requestRenderMode = false;

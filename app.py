@@ -3,7 +3,7 @@ from pyswmm import Simulation
 import os
 import shutil
 import time
-from utils import extract_node_depth_data, update_geojson_with_depth_data
+from utils import extract_node_depth_data, update_geojson_with_depth_data, calculate_out_depth
 import mimetypes
 
 mimetypes.add_type('application/javascript', '.js')
@@ -115,7 +115,7 @@ def run_swmm():
             # 更新GeoJSON文件
             try:
                 updated_geojson = update_geojson_with_depth_data(geojson_file_path, node_data, output_file_path)
-                
+                calculate_out_depth(output_file_path)
                 return jsonify({
                     "status": "success",
                     "message": "SWMM模拟完成并成功更新GeoJSON文件",
