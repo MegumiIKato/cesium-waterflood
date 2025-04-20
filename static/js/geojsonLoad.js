@@ -6,7 +6,7 @@ const depthColorMap = {
 };
 
 // 定义统一点尺寸
-const pointSize = 10;
+const pointSize = 6;
 
 // 默认蓝色
 const defaultColor = Cesium.Color.BLUE.withAlpha(0.7);
@@ -328,7 +328,7 @@ export function loadGeoJSONData(viewer, url) {
                             pixelSize: pointSize,
                             color: defaultColor,
                             outlineColor: Cesium.Color.WHITE,
-                            outlineWidth: 2,
+                            outlineWidth: 1,
                             heightReference: Cesium.HeightReference.CLAMP_TO_3D_MODEL,
                             disableDepthTestDistance: Number.POSITIVE_INFINITY
                         },
@@ -503,6 +503,9 @@ export function initNodeOverflowDisplay(viewer) {
                     item.bufferEntity = null;
                 }
             });
+            
+            // 清除连接区域
+            clearConnections(viewer);
             
             // 更新按钮状态
             nodeOverflowBtn.setAttribute('data-status', 'inactive');
