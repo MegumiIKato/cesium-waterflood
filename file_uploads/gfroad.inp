@@ -50,7 +50,7 @@ DRY_ONLY         NO
 [RAINGAGES]
 ;;Name           Format    Interval SCF      Source    
 ;;-------------- --------- ------ ------ ----------
-1                INTENSITY 0:05     1.0      FILE       "P5.dat"         1          MM   
+1                INTENSITY 0:05     1.0      FILE       "P20.dat"         1          MM   
 
 [SUBCATCHMENTS]
 ;;Name           Rain Gage        Outlet           Area     %Imperv  Width    %Slope   CurbLen  SnowPack        

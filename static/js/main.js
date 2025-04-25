@@ -45,12 +45,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             requestVertexNormals: true,//请求地形的顶点法线，这对于渲染光照和阴影效果非常重要
           }), // 使用全球地形
         animation: false, // 隐藏动画控件
-        baseLayerPicker: false, // 隐藏图层选择器
         fullscreenButton: false, // 隐藏全屏按钮
         vrButton: false, // 隐藏VR按钮
         geocoder: true, // 显示地理编码器
         homeButton: false, // 隐藏Home按钮
         infoBox: false, // 隐藏信息框
+        baseLayerPicker: false, // 隐藏图层选择器
         sceneModePicker: true, // 显示场景模式选择器
         selectionIndicator: false, // 隐藏选择指示器，避免与拖拽冲突
         timeline: false, // 隐藏时间线
@@ -63,6 +63,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         sceneMode: Cesium.SceneMode.SCENE3D, // 设置为3D地球模式
         mapProjection: new Cesium.WebMercatorProjection() // 使用Web墨卡托投影
     });
+    
+    // 隐藏天地图影像底图
+    // viewer.imageryLayers.get(0).show = false; 
     
     // 设置视图控制
     viewer.scene.screenSpaceCameraController.enableTilt = true; // 启用倾斜
