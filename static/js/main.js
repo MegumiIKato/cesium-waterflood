@@ -1,6 +1,4 @@
 import { rain, stopRain } from '/static/js/raineffect.js';
-import { initDrawTools, startDrawRectangle, stopDrawRectangle } from '/static/js/drawtools.js';
-import { initModelAdjuster } from '/static/js/modeladjuster.js';
 import { loadGeoJSONData, initNodeStatusDisplay, initNodeOverflowDisplay } from '/static/js/geojsonLoad.js';
 
 // 等待DOM加载完成后执行
