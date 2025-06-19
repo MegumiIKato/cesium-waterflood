@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from pyswmm import Simulation
 import os
-import shutil
+# import shutil
 import time
 from utils import extract_node_depth_data, update_geojson_with_depth_data, calculate_out_depth
 import mimetypes
