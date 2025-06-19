@@ -5,10 +5,10 @@ import { loadGeoJSONData, initNodeStatusDisplay, initNodeOverflowDisplay } from 
 document.addEventListener('DOMContentLoaded', async function() {
 
     // 设置Cesium Ion访问令牌
-    Cesium.Ion.defaultAccessToken = '';
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NDcyNTc1ZS04MTNmLTQ5ZjktYmRlYy1mMWU5ZDlkNTE0NGIiLCJpZCI6MTIwMzcyLCJpYXQiOjE3NTAzMjA2NTR9.j5WLf6_3_-TZoXk3l4u05fMoBZCvEMUeT-8plFeD9ak';
     
     // 天地图密钥
-    const tdtToken = '';
+    const tdtToken = '10e6e854bbd57fc541ab5cbbbce7306e';
 
     // 创建天地图影像底图
     const tdtImgProvider = new Cesium.WebMapTileServiceImageryProvider({

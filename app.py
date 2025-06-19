@@ -4,6 +4,7 @@ import os
 # import shutil
 import time
 from utils import extract_node_depth_data, update_geojson_with_depth_data, calculate_out_depth
+from jenks import runjenks, updateclass, get_formatted_breaks
 import mimetypes
 
 mimetypes.add_type('application/javascript', '.js')
@@ -116,13 +117,25 @@ def run_swmm():
             try:
                 updated_geojson = update_geojson_with_depth_data(geojson_file_path, node_data, output_file_path)
                 calculate_out_depth(output_file_path)
+                
+                # 对洪水体积数据进行自然断点3分级，并更新到GeoJSON文件
+                _, node_flood_data = node_data
+                formatted_breaks = []
+                if node_flood_data:
+                    class_data, breaks = runjenks(node_flood_data)
+                    updateclass(output_file_path, class_data)
+                    # 获取格式化的断点字符串
+                    formatted_breaks = get_formatted_breaks(breaks)
+                    print(f"格式化的断点: {formatted_breaks}")
+
                 return jsonify({
                     "status": "success",
                     "message": "SWMM模拟完成并成功更新GeoJSON文件",
                     "rpt_file": os.path.basename(rpt_file),
                     "out_file": os.path.basename(out_file),
                     "nodes_count": len(node_data),
-                    "updated_file": output_file_path
+                    "updated_file": output_file_path,
+                    "breaks": formatted_breaks  # 添加格式化的断点信息
                 })
             except Exception as e:
                 return jsonify({
@@ -184,4 +197,3 @@ def check_simulation_result():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

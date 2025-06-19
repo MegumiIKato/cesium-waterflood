@@ -840,7 +840,8 @@
         "PY": 2769152.7815,
         "MAX_DEPTH": 1.67,
         "FLOOD_VOLUME": 0.001,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -870,7 +871,8 @@
         "PY": 2768870.7294,
         "MAX_DEPTH": 2.4,
         "FLOOD_VOLUME": 0.217,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -1045,7 +1047,8 @@
         "PY": 2768940.2449,
         "MAX_DEPTH": 3.22,
         "FLOOD_VOLUME": 0.112,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -1394,7 +1397,8 @@
         "PY": 2769014.9041,
         "MAX_DEPTH": 2.7,
         "FLOOD_VOLUME": 0.982,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 2
       },
       "geometry": {
         "type": "Point",
@@ -1424,7 +1428,8 @@
         "PY": 2768879.6631,
         "MAX_DEPTH": 2.86,
         "FLOOD_VOLUME": 0.055,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -1657,7 +1662,8 @@
         "PY": 2769122.707,
         "MAX_DEPTH": 1.5,
         "FLOOD_VOLUME": 0.256,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -1861,7 +1867,8 @@
         "PY": 2768935.5632,
         "MAX_DEPTH": 2.52,
         "FLOOD_VOLUME": 0.111,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -1949,7 +1956,8 @@
         "PY": 2768875.5346,
         "MAX_DEPTH": 3.18,
         "FLOOD_VOLUME": 0.096,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -2327,7 +2335,8 @@
         "PY": 2768884.6655,
         "MAX_DEPTH": 2.45,
         "FLOOD_VOLUME": 0.564,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 2
       },
       "geometry": {
         "type": "Point",
@@ -2473,7 +2482,8 @@
         "PY": 2769119.6763,
         "MAX_DEPTH": 1.75,
         "FLOOD_VOLUME": 0.171,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -2561,7 +2571,8 @@
         "PY": 2769036.3745,
         "MAX_DEPTH": 2.24,
         "FLOOD_VOLUME": 0.073,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -2591,7 +2602,8 @@
         "PY": 2768909.6794,
         "MAX_DEPTH": 3.49,
         "FLOOD_VOLUME": 0.083,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -2940,7 +2952,8 @@
         "PY": 2768942.8893,
         "MAX_DEPTH": 2.39,
         "FLOOD_VOLUME": 0.088,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",
@@ -3086,7 +3099,8 @@
         "PY": 2768971.2349,
         "MAX_DEPTH": 2.72,
         "FLOOD_VOLUME": 1.945,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 3
       },
       "geometry": {
         "type": "Point",
@@ -3261,7 +3275,8 @@
         "PY": 2768783.3898,
         "MAX_DEPTH": 1.6,
         "FLOOD_VOLUME": 0.114,
-        "OUT_DEPTH": 0.0
+        "OUT_DEPTH": 0.0,
+        "class": 1
       },
       "geometry": {
         "type": "Point",

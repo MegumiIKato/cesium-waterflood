@@ -178,8 +178,8 @@ def calculate_out_depth(geojson_file_path, output_file_path=None):
 #     try:
 #         # 提取数据
 #         print("开始提取数据...")
-#         node_data = extract_node_depth_data(rpt_file_path)
-        
+#         node_data1,node_date2 = extract_node_depth_data(rpt_file_path)
+#         print(node_date2)
 #         # 更新GeoJSON文件
 #         print("开始更新GeoJSON文件...")
 #         update_geojson_with_depth_data(geojson_file_path, node_data)
