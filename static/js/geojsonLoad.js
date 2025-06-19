@@ -1,15 +1,30 @@
-// 定义深度分级颜色
-const depthColorMap = {
-    "大于0.5米": Cesium.Color.GREEN.withAlpha(0.7),
-    "0.5-0米": Cesium.Color.YELLOW.withAlpha(0.7),
-    "已溢出": Cesium.Color.RED.withAlpha(0.7)
+export let currentBreaks = [];
+export function setBreaks(breaksData) {
+    // breaksData 字符串数组
+    currentBreaks = breaksData;
+    console.log("前端接收到断点信息:", currentBreaks);
+    
+    // 更新depthColorMap
+    // depthColorMap = {
+    //     [currentBreaks[0]]: Cesium.Color.GREEN.withAlpha(0.7),
+    //     [currentBreaks[1]]: Cesium.Color.YELLOW.withAlpha(0.7),
+    //     [currentBreaks[2]]: Cesium.Color.RED.withAlpha(0.7)
+    // };
+}
+// 默认蓝色
+const defaultColor = Cesium.Color.BLUE.withAlpha(0.7);
+
+let depthColorMap = {
+    "未溢流":defaultColor,
+    "0.002—0.008": Cesium.Color.GREEN.withAlpha(0.7),
+    "0.008—0.059": Cesium.Color.YELLOW.withAlpha(0.7),
+    "0.059—0.115": Cesium.Color.RED.withAlpha(0.7)
 };
 
 // 定义统一点尺寸
 const pointSize = 6;
 
-// 默认蓝色
-const defaultColor = Cesium.Color.BLUE.withAlpha(0.7);
+
 
 // 缓冲区颜色
 const bufferColor = new Cesium.Color(0.5, 0.8, 0.9)
@@ -373,7 +388,7 @@ export function createLegend(colorMap) {
 
     // 创建图例标题
     const title = document.createElement('div');
-    title.textContent = '积水距井口距离';
+    title.innerHTML = '节点溢流量情况 （10<sup>6</sup> 升）';
     title.style.fontWeight = 'bold';
     title.style.marginBottom = '15px';
     title.style.borderBottom = '2px solid white';
@@ -427,14 +442,18 @@ export function initNodeStatusDisplay(viewer) {
             // 激活分级显示
             pointEntities.forEach(item => {
                 const outDepth = item.entity.properties.getValue().OUT_DEPTH;
+                const floodClass = item.entity.properties.getValue().class;
+
                 // 根据深度确定颜色
                 let pointColor;
-                if (outDepth < -0.5) {
-                    pointColor = depthColorMap["大于0.5米"];
-                } else if (outDepth >= -0.5 && outDepth < 0) {
-                    pointColor = depthColorMap["0.5-0米"];
-                } else {
-                    pointColor = depthColorMap["已溢出"];
+                if (floodClass == 1) {
+                    pointColor = depthColorMap['0.002—0.008'];
+                } else if (floodClass == 2) {
+                    pointColor = depthColorMap['0.008—0.059'];
+                } else if (floodClass == 3){
+                    pointColor = depthColorMap['0.059—0.115'];
+                } else{
+                    pointColor = depthColorMap['未溢流'];
                 }
 
                 // 更新点颜色
@@ -519,4 +538,4 @@ export function initNodeOverflowDisplay(viewer) {
             }, 100);
         }
     });
-} 
+}
